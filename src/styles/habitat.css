@@ -1,0 +1,142 @@
+.habitat-stage {
+  position: relative;
+  min-height: clamp(420px, 68vh, 760px);
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(145, 183, 196, 0.16)),
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.74), transparent 32%);
+  box-shadow: var(--shadow);
+}
+
+.habitat-stage[data-phase="暮色"] {
+  background:
+    linear-gradient(180deg, rgba(233, 223, 204, 0.62), rgba(145, 183, 196, 0.2)),
+    radial-gradient(circle at 65% 20%, rgba(255, 245, 212, 0.66), transparent 34%);
+}
+
+.habitat-stage[data-phase="夜霧"] {
+  background:
+    linear-gradient(180deg, rgba(52, 74, 82, 0.18), rgba(145, 183, 196, 0.22)),
+    radial-gradient(circle at 44% 20%, rgba(243, 244, 239, 0.62), transparent 32%);
+}
+
+.greenhouse-frame {
+  position: absolute;
+  inset: 7% 8% 18%;
+  border: 1px solid rgba(52, 74, 82, 0.2);
+  border-bottom: 0;
+  clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
+}
+
+.greenhouse-frame::before,
+.greenhouse-frame::after {
+  content: "";
+  position: absolute;
+  background: rgba(52, 74, 82, 0.14);
+}
+
+.greenhouse-frame::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.greenhouse-frame::after {
+  left: 0;
+  right: 0;
+  top: 38%;
+  height: 1px;
+}
+
+.floor-plane {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
+  height: 34%;
+  border-radius: 50% 50% 14% 14%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(174, 190, 170, 0.28)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(52, 74, 82, 0.08),
+      rgba(52, 74, 82, 0.08) 1px,
+      transparent 1px,
+      transparent 54px
+    );
+  transform: perspective(600px) rotateX(58deg);
+  transform-origin: bottom;
+}
+
+.furniture {
+  position: absolute;
+  width: 8%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.furniture span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--item-tint);
+  border: 1px solid rgba(52, 74, 82, 0.2);
+  box-shadow: 0 10px 18px rgba(52, 74, 82, 0.12);
+}
+
+.furniture-mat {
+  width: 22%;
+}
+
+.furniture-mat span,
+.furniture-bed span {
+  border-radius: 50%;
+}
+
+.furniture-table span {
+  border-radius: 50% 50% 8px 8px;
+}
+
+.furniture-cabinet {
+  width: 12%;
+}
+
+.furniture-cabinet span {
+  border-radius: 6px;
+}
+
+.furniture-pot span {
+  clip-path: polygon(18% 28%, 82% 28%, 70% 100%, 30% 100%);
+}
+
+.furniture-bottle span {
+  border-radius: 45% 45% 30% 30%;
+}
+
+.furniture-lamp span {
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(233, 223, 204, 0.9);
+}
+
+.furniture-curtain {
+  width: 14%;
+  height: 22%;
+}
+
+.furniture-curtain span {
+  border-radius: 0 0 50% 50%;
+}
+
+.furniture-stone span {
+  border-radius: 46% 54% 50% 44%;
+}
+
+.furniture-tag span {
+  border-radius: 2px;
+  transform: rotate(-8deg);
+}
