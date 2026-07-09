@@ -12,6 +12,12 @@ export function migrateState(value: unknown): GameState | null {
   }
   return {
     ...candidate,
+    playerSettings: {
+      animation: candidate.playerSettings?.animation ?? "full",
+      fontScale: candidate.playerSettings?.fontScale ?? "normal",
+      theme: candidate.playerSettings?.theme ?? "clear",
+      highContrast: candidate.playerSettings?.highContrast ?? false,
+    },
     schemaVersion: CURRENT_SCHEMA_VERSION,
   } as GameState;
 }

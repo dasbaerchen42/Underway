@@ -13,11 +13,16 @@ export function CreatureView({ creature }: { creature: Creature }) {
     "--dark-core": appearance.darkCore,
     "--fluid-motion": appearance.fluidMotion,
   } as CSSProperties;
+  const name = creature.name === "未命名的牠" ? "小玻" : creature.name;
 
   return (
-    <div className="creature-wrap" aria-label={`${creature.name} 的外觀`}>
+    <div className="creature-wrap" aria-label={`${name} 的觀測樣貌`}>
       <div className="creature" style={style}>
-        <div className="creature-core" />
+        <div className="creature-core">
+          <span />
+        </div>
+        <span className="creature-brow brow-left" />
+        <span className="creature-brow brow-right" />
         <div className="creature-eye eye-left" />
         <div className="creature-eye eye-right" />
         {appearance.tendrils >= 18 && (

@@ -14,6 +14,7 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
   const [showNoteInJournal, setShowNoteInJournal] = useState(true);
   const latest = state.feedings[0];
   const selectedFood = useMemo(() => foods.find((food) => food.id === foodId), [foodId]);
+  const creatureName = creature.name === "未命名的牠" ? "小玻" : creature.name;
 
   return (
     <section className="tool-panel feeding-panel">
@@ -36,7 +37,6 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
               type="button"
             >
               <strong>{food.name}</strong>
-              <span>{food.texture}</span>
             </button>
           ))}
         </div>
@@ -110,7 +110,7 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
           setNote("");
         }}
       >
-        餵給牠
+        餵給{creatureName}
       </button>
 
       <div className="latest-response" aria-live="polite">

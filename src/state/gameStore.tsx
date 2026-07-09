@@ -21,6 +21,7 @@ type GameAction =
   | { type: "initialize"; now: string }
   | { type: "feed"; input: FeedingInput }
   | { type: "touch"; now: string }
+  | { type: "renameCreature"; creatureId: string; name: string }
   | { type: "setSettings"; settings: PlayerSettings }
   | { type: "import"; state: GameState }
   | { type: "clear"; now: string };
@@ -41,6 +42,7 @@ function createInitialState(now = new Date().toISOString()): GameState {
     playerSettings: {
       animation: "full",
       fontScale: "normal",
+      theme: "clear",
       highContrast: false,
     },
     creatures: [creature],
@@ -121,6 +123,18 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           },
         ],
         lastVisitAt: action.now,
+      };
+    }
+    case "renameCreature": {
+      const nextName = action.name.trim().slice(0, 16);
+      if (!nextName) {
+        return state;
+      }
+      return {
+        ...state,
+        creatures: state.creatures.map((creature) =>
+          creature.id === action.creatureId ? { ...creature, name: nextName } : creature,
+        ),
       };
     }
     case "setSettings":

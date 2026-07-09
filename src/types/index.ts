@@ -197,7 +197,8 @@ export type JournalEntry = {
 
 export type PlayerSettings = {
   animation: "full" | "reduced";
-  fontScale: "normal" | "large";
+  fontScale: "small" | "normal" | "large";
+  theme: "clear" | "neon";
   highContrast: boolean;
 };
 

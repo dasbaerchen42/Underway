@@ -11,15 +11,17 @@ type View = "feed" | "journal" | "atlas" | "settings";
 function AppShell() {
   const { state, dispatch } = useGame();
   const [view, setView] = useState<View>("feed");
+  const [draftName, setDraftName] = useState("");
   const creature = state.creatures[0];
   const phase = useMemo(() => calculateWorldPhase(), [state.lastVisitAt]);
   const visibleTraits = creature.unlockedTraits.length
     ? creature.unlockedTraits.join("、")
     : "尚未命名的細微傾向";
+  const creatureName = creature.name === "未命名的牠" ? "小玻" : creature.name;
 
   return (
     <main
-      className={`app-shell ${state.playerSettings.highContrast ? "high-contrast" : ""} font-${state.playerSettings.fontScale}`}
+      className={`app-shell theme-${state.playerSettings.theme} ${state.playerSettings.highContrast ? "high-contrast" : ""} font-${state.playerSettings.fontScale}`}
       data-motion={state.playerSettings.animation}
     >
       <section className="stage-column" aria-label="箱庭舞台">
@@ -29,25 +31,80 @@ function AppShell() {
             <h1>霧潮溫室</h1>
             <p className="title-note">把一份食物、一段描述和一點期待交給牠。</p>
           </div>
-          <div className="phase-pill" aria-label="當前光巡">
-            <span>第 {phase.cycleNumber} 次光巡</span>
-            <strong>{phase.phase}</strong>
+          <div className="top-actions">
+            <div className="theme-toggle" aria-label="主題切換">
+              <button
+                aria-pressed={state.playerSettings.theme === "clear"}
+                className={state.playerSettings.theme === "clear" ? "active" : ""}
+                onClick={() =>
+                  dispatch({
+                    type: "setSettings",
+                    settings: { ...state.playerSettings, theme: "clear" },
+                  })
+                }
+                title="清透主題"
+              >
+                ☼
+              </button>
+              <button
+                aria-pressed={state.playerSettings.theme === "neon"}
+                className={state.playerSettings.theme === "neon" ? "active" : ""}
+                onClick={() =>
+                  dispatch({
+                    type: "setSettings",
+                    settings: { ...state.playerSettings, theme: "neon" },
+                  })
+                }
+                title="夜光霓虹主題"
+              >
+                ☾
+              </button>
+            </div>
+            <div className="phase-pill" aria-label="當前光巡">
+              <span>第 {phase.cycleNumber} 次光巡</span>
+              <strong>{phase.phase}</strong>
+            </div>
           </div>
         </header>
         <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />
-        <div className="creature-status" aria-live="polite">
-          <div>
-            <span>最近反應</span>
-            <strong>{creature.activeTemporaryEffects[0]?.label ?? "牠正在慢慢呼吸。"}</strong>
-          </div>
-          <div>
-            <span>已出現特徵</span>
-            <strong>{visibleTraits}</strong>
-          </div>
-        </div>
       </section>
 
       <section className="panel-column" aria-label="操作面板">
+        <section className="name-panel" aria-label="小生物名字">
+          <label>
+            <span>小生物名字</span>
+            <input
+              value={draftName}
+              onChange={(event) => setDraftName(event.target.value)}
+              placeholder={creatureName}
+              maxLength={16}
+            />
+          </label>
+          <button
+            onClick={() => {
+              dispatch({
+                type: "renameCreature",
+                creatureId: creature.id,
+                name: draftName || creatureName,
+              });
+              setDraftName("");
+            }}
+          >
+            改名
+          </button>
+        </section>
+
+        <div className="creature-status" aria-live="polite">
+          <div>
+            <span>最近反應</span>
+            <strong>{creature.activeTemporaryEffects[0]?.label ?? `${creatureName} 正在水裡慢慢漂浮。`}</strong>
+          </div>
+          <div>
+            <span>觀測狀態</span>
+            <strong>{visibleTraits}</strong>
+          </div>
+        </div>
+
         <nav className="tabbar" aria-label="主要分頁">
           <button className={view === "feed" ? "active" : ""} onClick={() => setView("feed")}>
             餵食

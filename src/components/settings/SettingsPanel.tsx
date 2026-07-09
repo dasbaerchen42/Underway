@@ -40,12 +40,29 @@ export function SettingsPanel() {
           onChange={(event) =>
             dispatch({
               type: "setSettings",
-              settings: { ...settings, fontScale: event.target.value as "normal" | "large" },
+              settings: { ...settings, fontScale: event.target.value as "small" | "normal" | "large" },
             })
           }
         >
+          <option value="small">小</option>
           <option value="normal">標準</option>
           <option value="large">較大</option>
+        </select>
+      </label>
+
+      <label className="select-row">
+        主題
+        <select
+          value={settings.theme}
+          onChange={(event) =>
+            dispatch({
+              type: "setSettings",
+              settings: { ...settings, theme: event.target.value as "clear" | "neon" },
+            })
+          }
+        >
+          <option value="clear">清透</option>
+          <option value="neon">夜光霓虹</option>
         </select>
       </label>
 

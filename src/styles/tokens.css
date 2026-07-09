@@ -1,20 +1,93 @@
 :root {
   color-scheme: light;
-  --fog: #f5f1e7;
-  --paper: #fffdf6;
-  --glass: #d8eaeb;
-  --pool: #88b9c1;
-  --moss: #819b78;
-  --lichen: #c6d4ad;
-  --amber: #d8aa65;
-  --coral: #c77f65;
-  --ink: #253f46;
-  --deep: #142b31;
-  --line: rgba(37, 63, 70, 0.18);
-  --soft-line: rgba(255, 255, 255, 0.7);
-  --stage-shadow: 0 28px 80px rgba(30, 56, 62, 0.22);
-  --panel-shadow: 0 16px 36px rgba(30, 56, 62, 0.12);
-  --radius: 8px;
+  --fog: #f6fbf8;
+  --paper: #fffdfa;
+  --glass: #dff4f1;
+  --pool: #7fc6d0;
+  --moss: #8ab889;
+  --lichen: #d7e6be;
+  --amber: #efc978;
+  --coral: #ef9aa6;
+  --ink: #29484f;
+  --deep: #16343d;
+  --line: rgba(41, 72, 79, 0.2);
+  --soft-line: rgba(255, 255, 255, 0.74);
+  --panel-shadow: 0 14px 34px rgba(29, 70, 78, 0.12);
+  --stage-shadow: 0 28px 70px rgba(29, 70, 78, 0.18);
+  --radius: 6px;
   font-family:
-    "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    "jf open 粉圓", "M PLUS Rounded 1c", "Huninn", "Kosugi Maru", "Microsoft JhengHei",
+    "Noto Sans TC", system-ui, sans-serif;
+}
+
+.theme-clear {
+  color-scheme: light;
+  --page-bg: #edf7f4;
+  --page-grid: rgba(60, 109, 114, 0.06);
+  --fog: #f7fbf8;
+  --paper: #fffdf8;
+  --glass: #ddf5f0;
+  --pool: #7cc9d1;
+  --moss: #8fbd91;
+  --lichen: #dbe9c6;
+  --amber: #efc66f;
+  --coral: #ee99a6;
+  --ink: #29484f;
+  --deep: #173740;
+  --muted: rgba(41, 72, 79, 0.64);
+  --line: rgba(41, 72, 79, 0.18);
+  --soft-line: rgba(255, 255, 255, 0.72);
+  --panel-bg: rgba(255, 253, 248, 0.68);
+  --panel-strong: rgba(255, 253, 248, 0.86);
+  --chip-bg: rgba(221, 245, 240, 0.68);
+  --stage-bg: #dff4ef;
+  --stage-sky: rgba(255, 253, 248, 0.68);
+  --wall-left: rgba(186, 226, 223, 0.76);
+  --wall-right: rgba(204, 235, 229, 0.76);
+  --floor: rgba(247, 247, 224, 0.88);
+  --floor-alt: rgba(224, 244, 236, 0.92);
+  --water: rgba(119, 207, 219, 0.24);
+  --water-line: rgba(79, 152, 164, 0.34);
+  --accent: #ee99a6;
+  --accent-2: #76becd;
+  --button-bg: rgba(255, 253, 248, 0.72);
+  --button-selected: rgba(221, 245, 240, 0.9);
+  --stage-shadow: 0 28px 72px rgba(38, 83, 91, 0.18);
+  --panel-shadow: 0 14px 32px rgba(38, 83, 91, 0.12);
+}
+
+.theme-neon {
+  color-scheme: dark;
+  --page-bg: #071329;
+  --page-grid: rgba(144, 234, 255, 0.07);
+  --fog: #edf9ff;
+  --paper: #0f2341;
+  --glass: #143858;
+  --pool: #4de4ff;
+  --moss: #8cffc1;
+  --lichen: #4a6f82;
+  --amber: #ffd45f;
+  --coral: #ff78b7;
+  --ink: #e9faff;
+  --deep: #f7fdff;
+  --muted: rgba(233, 250, 255, 0.68);
+  --line: rgba(144, 234, 255, 0.24);
+  --soft-line: rgba(203, 246, 255, 0.18);
+  --panel-bg: rgba(12, 31, 56, 0.72);
+  --panel-strong: rgba(14, 39, 70, 0.9);
+  --chip-bg: rgba(77, 228, 255, 0.12);
+  --stage-bg: #091b38;
+  --stage-sky: rgba(13, 41, 71, 0.78);
+  --wall-left: rgba(22, 54, 94, 0.86);
+  --wall-right: rgba(16, 43, 84, 0.88);
+  --floor: rgba(18, 48, 80, 0.92);
+  --floor-alt: rgba(21, 63, 95, 0.92);
+  --water: rgba(77, 228, 255, 0.16);
+  --water-line: rgba(107, 241, 255, 0.46);
+  --accent: #ff78b7;
+  --accent-2: #4de4ff;
+  --button-bg: rgba(14, 39, 70, 0.72);
+  --button-selected: rgba(77, 228, 255, 0.16);
+  --stage-shadow: 0 30px 82px rgba(0, 0, 0, 0.38);
+  --panel-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
 }
