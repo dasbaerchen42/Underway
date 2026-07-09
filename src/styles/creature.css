@@ -1,0 +1,249 @@
+.creature-wrap {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(34vw, 280px);
+  min-width: 180px;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  animation: float 8s ease-in-out infinite;
+}
+
+.creature {
+  position: absolute;
+  inset: 18% 12% 16%;
+  border-radius: calc(30% + var(--softness) * 0.34%);
+  background:
+    radial-gradient(circle at 52% 55%, rgba(52, 74, 82, calc(0.12 + var(--dark-core) * 0.003)), transparent 23%),
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.78), transparent 30%),
+    linear-gradient(
+      135deg,
+      rgba(145, 183, 196, calc(0.32 + var(--wetness) * 0.003)),
+      rgba(233, 223, 204, calc(0.28 + var(--amber) * 0.002))
+    );
+  opacity: calc(1 - var(--transparency) * 0.0035);
+  filter:
+    hue-rotate(calc(var(--blue) * 0.72deg - var(--amber) * 0.26deg))
+    saturate(calc(0.86 + var(--blue) * 0.004))
+    drop-shadow(0 0 calc(7px + var(--glow) * 0.18px) rgba(255, 255, 255, 0.72));
+  box-shadow:
+    inset 0 0 34px rgba(255, 255, 255, 0.42),
+    inset 0 -22px 30px rgba(52, 74, 82, 0.1);
+  animation: breathe 5.8s ease-in-out infinite;
+}
+
+.creature-core {
+  position: absolute;
+  left: 45%;
+  top: 48%;
+  width: calc(28px + var(--dark-core) * 0.42px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(52, 74, 82, 0.28);
+  filter: blur(8px);
+  transform: translate(-50%, -50%);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.creature-eye {
+  position: absolute;
+  top: 36%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(52, 74, 82, 0.62);
+}
+
+.eye-left {
+  left: 38%;
+}
+
+.eye-right {
+  right: 38%;
+}
+
+.tendril,
+.membrane,
+.crystal,
+.flora,
+.horn {
+  position: absolute;
+  display: block;
+}
+
+.tendril {
+  bottom: -18px;
+  width: 14px;
+  height: 58px;
+  border-radius: 999px;
+  background: rgba(145, 183, 196, 0.52);
+  transform-origin: top;
+  animation: tendril 5.5s ease-in-out infinite;
+}
+
+.tendril-one {
+  left: 25%;
+  rotate: 18deg;
+}
+
+.tendril-two {
+  left: 48%;
+  height: 68px;
+  animation-delay: -1.8s;
+}
+
+.tendril-three {
+  right: 22%;
+  rotate: -16deg;
+  animation-delay: -3s;
+}
+
+.membrane {
+  inset: -8% -7%;
+  border-radius: 48%;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.12);
+  filter: blur(1px);
+}
+
+.crystal {
+  width: 24px;
+  height: 42px;
+  background: rgba(243, 244, 239, 0.72);
+  clip-path: polygon(50% 0, 100% 38%, 70% 100%, 30% 100%, 0 38%);
+}
+
+.crystal-one {
+  left: 18%;
+  top: 5%;
+  rotate: -18deg;
+}
+
+.crystal-two {
+  right: 18%;
+  bottom: 12%;
+  rotate: 28deg;
+}
+
+.flora {
+  width: 22px;
+  height: 34px;
+  border-radius: 80% 0 80% 0;
+  background: rgba(174, 190, 170, 0.72);
+}
+
+.flora-one {
+  right: 18%;
+  top: 10%;
+  rotate: 28deg;
+}
+
+.flora-two {
+  left: 21%;
+  bottom: 18%;
+  rotate: -32deg;
+}
+
+.horn {
+  top: -14px;
+  width: 24px;
+  height: 32px;
+  background: rgba(233, 223, 204, 0.74);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.horn-left {
+  left: 30%;
+  rotate: -18deg;
+}
+
+.horn-right {
+  right: 30%;
+  rotate: 18deg;
+}
+
+.motes span {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.9);
+  animation: mote 9s ease-in-out infinite;
+}
+
+.motes span:nth-child(1) {
+  left: 12%;
+  top: 28%;
+}
+
+.motes span:nth-child(2) {
+  right: 12%;
+  top: 16%;
+  animation-delay: -2s;
+}
+
+.motes span:nth-child(3) {
+  right: 6%;
+  bottom: 32%;
+  animation-delay: -4s;
+}
+
+.motes span:nth-child(4) {
+  left: 20%;
+  bottom: 14%;
+  animation-delay: -6s;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1, 0.98);
+  }
+  50% {
+    transform: scale(1.035, 1.02);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+  50% {
+    opacity: 0.78;
+  }
+}
+
+@keyframes tendril {
+  0%,
+  100% {
+    transform: skewX(-5deg);
+  }
+  50% {
+    transform: skewX(8deg) translateY(4px);
+  }
+}
+
+@keyframes mote {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-16px);
+    opacity: 0.9;
+  }
+}

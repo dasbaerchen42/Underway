@@ -1,0 +1,15 @@
+:root {
+  color-scheme: light;
+  --mist: #f3f4ef;
+  --pale-blue: #c9d8dc;
+  --glass-blue: #91b7c4;
+  --warm-rice: #e9dfcc;
+  --moss: #aebeaa;
+  --ink: #344a52;
+  --paper: #fbfaf5;
+  --line: rgba(52, 74, 82, 0.18);
+  --shadow: 0 24px 70px rgba(52, 74, 82, 0.18);
+  --radius: 8px;
+  font-family:
+    "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
