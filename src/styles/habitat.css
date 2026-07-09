@@ -23,7 +23,7 @@
   position: absolute;
   left: 50%;
   top: 52%;
-  width: min(84%, 720px);
+  width: min(98%, 920px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   z-index: 2;
@@ -41,7 +41,7 @@
 }
 
 .aqua-room {
-  inset: 4%;
+  inset: 1%;
   border: 1px solid var(--soft-line);
   clip-path: polygon(50% 4%, 92% 24%, 92% 72%, 50% 94%, 8% 72%, 8% 24%);
   background: var(--stage-sky);
@@ -394,6 +394,6 @@
   }
 
   .aquarium-shell {
-    width: 96%;
+    width: 108%;
   }
 }

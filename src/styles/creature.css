@@ -142,7 +142,7 @@
 
 .eye-right {
   right: 39%;
-  animation-delay: -1.1s;
+  top: 38.5%;
 }
 
 .eye-right::after {
@@ -315,8 +315,14 @@
   100% {
     translate: 0 0;
   }
+  24% {
+    translate: 18px -18px;
+  }
   50% {
-    translate: 0 -12px;
+    translate: -14px 14px;
+  }
+  76% {
+    translate: 16px 10px;
   }
 }
 
@@ -326,16 +332,16 @@
     translate: 0 0;
   }
   14% {
-    translate: -34px -30px;
+    translate: -38px -32px;
   }
   30% {
-    translate: 36px -25px;
+    translate: 38px -28px;
   }
   48% {
-    translate: 45px 28px;
+    translate: 44px 30px;
   }
   66% {
-    translate: -42px 32px;
+    translate: -40px 34px;
   }
   82% {
     translate: 10px -6px;
