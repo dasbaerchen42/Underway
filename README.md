@@ -16,6 +16,10 @@ npm run build
 npm test
 ```
 
+## GitHub Pages
+
+專案使用 Vite 的相對 asset base，並附上 `.github/workflows/deploy-pages.yml`。合併到 `main` 後，請在 GitHub repository 的 Pages 設定中選擇 **GitHub Actions** 作為部署來源；之後每次 push 到 `main` 都會建置 `dist` 並部署。
+
 ## 目前功能
 
 - 一隻養成物與一個「霧潮溫室」箱庭場景。

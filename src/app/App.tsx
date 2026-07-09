@@ -27,9 +27,11 @@ function AppShell() {
           <div>
             <p className="kicker">共鳴箱庭</p>
             <h1>霧潮溫室</h1>
+            <p className="title-note">把一份食物、一段描述和一點期待交給牠。</p>
           </div>
           <div className="phase-pill" aria-label="當前光巡">
-            第 {phase.cycleNumber} 次光巡 · {phase.phase}
+            <span>第 {phase.cycleNumber} 次光巡</span>
+            <strong>{phase.phase}</strong>
           </div>
         </header>
         <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />

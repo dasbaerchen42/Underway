@@ -22,7 +22,7 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
           <p className="kicker">餵食抽屜</p>
           <h2>把今天的一部分交給牠</h2>
         </div>
-        <span>{state.feedings.length} 次紀錄</span>
+        <span className="count-chip">{state.feedings.length} 次紀錄</span>
       </div>
 
       <fieldset>

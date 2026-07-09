@@ -1,14 +1,19 @@
 :root {
   color-scheme: light;
-  --mist: #f3f4ef;
-  --pale-blue: #c9d8dc;
-  --glass-blue: #91b7c4;
-  --warm-rice: #e9dfcc;
-  --moss: #aebeaa;
-  --ink: #344a52;
-  --paper: #fbfaf5;
-  --line: rgba(52, 74, 82, 0.18);
-  --shadow: 0 24px 70px rgba(52, 74, 82, 0.18);
+  --fog: #f5f1e7;
+  --paper: #fffdf6;
+  --glass: #d8eaeb;
+  --pool: #88b9c1;
+  --moss: #819b78;
+  --lichen: #c6d4ad;
+  --amber: #d8aa65;
+  --coral: #c77f65;
+  --ink: #253f46;
+  --deep: #142b31;
+  --line: rgba(37, 63, 70, 0.18);
+  --soft-line: rgba(255, 255, 255, 0.7);
+  --stage-shadow: 0 28px 80px rgba(30, 56, 62, 0.22);
+  --panel-shadow: 0 16px 36px rgba(30, 56, 62, 0.12);
   --radius: 8px;
   font-family:
     "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
