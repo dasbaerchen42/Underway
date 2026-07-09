@@ -14,18 +14,23 @@ export function HabitatStage({
   return (
     <div className="habitat-stage" data-phase={phase}>
       <div className="aquarium-shell" aria-hidden="true">
-        <div className="aqua-wall wall-left">
+        <div className="aqua-room">
+          <span className="room-fill left-fill" />
+          <span className="room-fill right-fill" />
+          <span className="room-fill floor-fill" />
+          <span className="room-line room-line-left" />
+          <span className="room-line room-line-right" />
+          <span className="room-line room-line-floor-left" />
+          <span className="room-line room-line-floor-right" />
+          <span className="room-line room-line-inner-left" />
+          <span className="room-line room-line-inner-right" />
           <span className="wall-panel panel-a" />
           <span className="wall-panel panel-b" />
-          <span className="wall-shelf" />
-        </div>
-        <div className="aqua-wall wall-right">
           <span className="wall-panel panel-c" />
           <span className="wall-panel panel-d" />
+          <span className="wall-shelf" />
           <span className="wall-shelf small" />
         </div>
-        <div className="inner-wall inner-wall-left" />
-        <div className="inner-wall inner-wall-right" />
         <div className="aqua-floor">
           <span className="floor-tile tile-a" />
           <span className="floor-tile tile-b" />

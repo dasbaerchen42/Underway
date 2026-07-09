@@ -64,8 +64,8 @@
   --paper: #0f2341;
   --glass: #143858;
   --pool: #4de4ff;
-  --moss: #8cffc1;
-  --lichen: #4a6f82;
+  --moss: #39b98f;
+  --lichen: #345f72;
   --amber: #ffd45f;
   --coral: #ff78b7;
   --ink: #e9faff;
@@ -75,7 +75,7 @@
   --soft-line: rgba(203, 246, 255, 0.18);
   --panel-bg: rgba(12, 31, 56, 0.72);
   --panel-strong: rgba(14, 39, 70, 0.9);
-  --chip-bg: rgba(77, 228, 255, 0.12);
+  --chip-bg: rgba(74, 171, 188, 0.14);
   --stage-bg: #091b38;
   --stage-sky: rgba(13, 41, 71, 0.78);
   --wall-left: rgba(22, 54, 94, 0.86);
@@ -87,7 +87,7 @@
   --accent: #ff78b7;
   --accent-2: #4de4ff;
   --button-bg: rgba(14, 39, 70, 0.72);
-  --button-selected: rgba(77, 228, 255, 0.16);
+  --button-selected: rgba(74, 171, 188, 0.18);
   --stage-shadow: 0 30px 82px rgba(0, 0, 0, 0.38);
   --panel-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
 }
