@@ -56,8 +56,7 @@ legend {
   display: grid;
   grid-template-columns: repeat(2, var(--stage-size));
   justify-content: center;
-  /* 讓格線列高 = 左欄內容高,右欄跟著等高,超出的在面板內捲動 */
-  align-content: center;
+  align-content: start;
   gap: 18px;
   padding: 18px;
   background:
@@ -106,11 +105,7 @@ legend {
   min-width: 0;
 }
 
-.panel-column {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
+
 
 .topbar,
 .panel-heading {
@@ -191,9 +186,6 @@ h2 {
 .tool-panel {
   border-radius: var(--radius);
   padding: 18px;
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
 }
 
 .feeding-panel,
@@ -202,6 +194,7 @@ h2 {
 .atlas-panel {
   display: grid;
   gap: 18px;
+  align-content: start;
 }
 
 .option-grid {
@@ -310,6 +303,9 @@ select {
 .journal-list {
   display: grid;
   gap: 10px;
+  /* 日記列表高度大致對齊左欄(觀測區高度),超出的在列表內捲動 */
+  max-height: calc(var(--stage-size) + 40px);
+  overflow-y: auto;
 }
 
 .journal-entry {
@@ -400,8 +396,8 @@ meter {
     flex-direction: column;
   }
 
-  .tool-panel {
-    flex: none;
+  .journal-list {
+    max-height: none;
   }
 }
 
