@@ -25,6 +25,7 @@ type GameAction =
   | { type: "feed"; input: FeedingInput }
   | { type: "touch"; now: string }
   | { type: "renameCreature"; creatureId: string; name: string }
+  | { type: "toggleFurniture" }
   | { type: "import"; state: GameState }
   | { type: "reset"; now: string };
 
@@ -48,7 +49,7 @@ function createInitialState(now = new Date().toISOString()): GameState {
     creatures: [creature],
     feedings: [],
     journalEntries: [buildJournalEntry(dateKey(now), [], [])],
-    habitat: { items: starterHabitatItems },
+    habitat: { items: starterHabitatItems, showFurniture: true },
     worldEvents: [],
     lastVisitAt: now,
     lastSettlementDate: dateKey(now),
@@ -91,7 +92,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           ),
         })),
         worldEvents: [...offline.events, ...state.worldEvents],
-        habitat: { items: offline.items },
+        habitat: { ...state.habitat, items: offline.items },
         lastVisitAt: action.now,
         lastSettlementDate: dateKey(action.now),
       };
@@ -175,6 +176,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ),
       };
     }
+    case "toggleFurniture":
+      return {
+        ...state,
+        habitat: { ...state.habitat, showFurniture: !state.habitat.showFurniture },
+      };
     case "import":
       return { ...action.state, initialized: true };
     case "reset":

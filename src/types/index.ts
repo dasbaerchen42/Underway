@@ -224,7 +224,7 @@ export type GameState = {
   creatures: Creature[];
   feedings: FeedingRecord[];
   journalEntries: JournalEntry[];
-  habitat: { items: HabitatItem[] };
+  habitat: { items: HabitatItem[]; showFurniture: boolean };
   worldEvents: WorldEvent[];
   lastVisitAt: string;
   lastSettlementDate: string;

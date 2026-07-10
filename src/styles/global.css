@@ -56,6 +56,8 @@ legend {
   display: grid;
   grid-template-columns: repeat(2, var(--stage-size));
   justify-content: center;
+  /* 讓格線列高 = 左欄內容高,右欄跟著等高,超出的在面板內捲動 */
+  align-content: center;
   gap: 18px;
   padding: 18px;
   background:
@@ -102,6 +104,12 @@ legend {
 .stage-column,
 .panel-column {
   min-width: 0;
+}
+
+.panel-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .topbar,
@@ -183,7 +191,8 @@ h2 {
 .tool-panel {
   border-radius: var(--radius);
   padding: 18px;
-  max-height: calc(100vh - 104px);
+  flex: 1;
+  min-height: 0;
   overflow: auto;
 }
 
@@ -392,7 +401,7 @@ meter {
   }
 
   .tool-panel {
-    max-height: none;
+    flex: none;
   }
 }
 

@@ -28,7 +28,13 @@ function AppShell() {
             第 {phase.cycleNumber} 次光巡 · {phase.phase}
           </div>
         </header>
-        <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />
+        <HabitatStage
+          creature={creature}
+          items={state.habitat.items}
+          phase={phase.phase}
+          showFurniture={state.habitat.showFurniture}
+          onToggleFurniture={() => dispatch({ type: "toggleFurniture" })}
+        />
         <div className="status-bar" aria-live="polite">
           <div className="status-row">
             <span>最近反應</span>

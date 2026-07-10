@@ -278,7 +278,10 @@ export function migrateState(value: unknown): GameState | null {
     journalEntries: [...journalDates]
       .sort((a, b) => b.localeCompare(a))
       .map((date) => buildJournalEntry(date, feedings, worldEvents)),
-    habitat: { items: habitatItems.length > 0 ? habitatItems : starterHabitatItems },
+    habitat: {
+      items: habitatItems.length > 0 ? habitatItems : starterHabitatItems,
+      showFurniture: habitat.showFurniture !== false,
+    },
     worldEvents,
     lastVisitAt: now,
     lastSettlementDate: isString(value.lastSettlementDate)
