@@ -20,6 +20,7 @@ export function CreatureView({
   const profile = deriveVisualProfile(creature);
   const [pos, setPos] = useState({ x: 50, y: 54 });
   const [gaze, setGaze] = useState({ x: 0, y: 0 });
+  const [brow, setBrow] = useState({ tilt: 0, lift: 0 });
   const [fleeing, setFleeing] = useState(false);
 
   // 在觀測區裡緩慢遊走：每 9~18 秒挑一個新位置，transition 慢慢飄過去。
@@ -68,6 +69,36 @@ export function CreatureView({
     };
   }, [reduced]);
 
+  // 眉毛表情:偶爾內揚、外揚或上挑,大多數時間放鬆。
+  useEffect(() => {
+    if (reduced) {
+      return;
+    }
+    let alive = true;
+    let timer = 0;
+    const shift = () => {
+      if (!alive) {
+        return;
+      }
+      const roll = Math.random();
+      setBrow(
+        roll < 0.4
+          ? { tilt: 0, lift: 0 }
+          : roll < 0.62
+            ? { tilt: 6 + Math.random() * 7, lift: 0 }
+            : roll < 0.84
+              ? { tilt: -(5 + Math.random() * 7), lift: 0 }
+              : { tilt: 0, lift: -3 },
+      );
+      timer = window.setTimeout(shift, 2600 + Math.random() * 4200);
+    };
+    timer = window.setTimeout(shift, 1800);
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
+  }, [reduced]);
+
   const style = {
     left: `${pos.x}%`,
     top: `${pos.y}%`,
@@ -84,6 +115,8 @@ export function CreatureView({
     "--tendrils": appearance.tendrils,
     "--gaze-x": gaze.x,
     "--gaze-y": gaze.y,
+    "--brow-tilt": `${brow.tilt}deg`,
+    "--brow-idle-lift": `${brow.lift}px`,
   } as CSSProperties;
   const reaction = creature.activeTemporaryEffects[0];
   const reactionType = reaction
