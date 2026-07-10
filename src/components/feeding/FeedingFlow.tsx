@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { careIntents } from "../../data/careIntents";
 import { foods } from "../../data/foods";
 import { meanings } from "../../data/meanings";
@@ -6,25 +6,15 @@ import { useGame } from "../../state/gameStore";
 import type { Creature } from "../../types";
 
 export function FeedingFlow({ creature }: { creature: Creature }) {
-  const { state, dispatch } = useGame();
+  const { dispatch } = useGame();
   const [foodId, setFoodId] = useState(foods[0].id);
   const [meaningId, setMeaningId] = useState(meanings[0].id);
   const [careIntentId, setCareIntentId] = useState(careIntents[0].id);
   const [note, setNote] = useState("");
   const [showNoteInJournal, setShowNoteInJournal] = useState(true);
-  const latest = state.feedings[0];
-  const selectedFood = useMemo(() => foods.find((food) => food.id === foodId), [foodId]);
 
   return (
     <section className="tool-panel feeding-panel">
-      <div className="panel-heading">
-        <div>
-          <p className="kicker">餵食抽屜</p>
-          <h2>把今天的一部分交給牠</h2>
-        </div>
-        <span>{state.feedings.length} 次紀錄</span>
-      </div>
-
       <fieldset>
         <legend>食物</legend>
         <div className="option-grid food-grid">
@@ -35,8 +25,7 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
               onClick={() => setFoodId(food.id)}
               type="button"
             >
-              <strong>{food.name}</strong>
-              <span>{food.texture}</span>
+              {food.name}
             </button>
           ))}
         </div>
@@ -112,11 +101,6 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
       >
         餵給牠
       </button>
-
-      <div className="latest-response" aria-live="polite">
-        <span>{selectedFood?.name ?? "食物"}的回聲</span>
-        <p>{latest?.dialogue ?? "牠在等第一份餵食，也在等你不必說清楚的那一部分。"}</p>
-      </div>
     </section>
   );
 }

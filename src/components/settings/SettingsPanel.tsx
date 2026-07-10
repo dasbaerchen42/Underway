@@ -67,20 +67,6 @@ export function SettingsPanel() {
         </select>
       </label>
 
-      <label className="checkbox-row">
-        <input
-          type="checkbox"
-          checked={settings.highContrast}
-          onChange={(event) =>
-            dispatch({
-              type: "setSettings",
-              settings: { ...settings, highContrast: event.target.checked },
-            })
-          }
-        />
-        高對比模式
-      </label>
-
       <div className="settings-actions">
         <button type="button" onClick={() => navigator.clipboard.writeText(exportJson())}>
           複製存檔 JSON

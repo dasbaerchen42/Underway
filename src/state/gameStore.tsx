@@ -49,8 +49,6 @@ function createInitialState(now = new Date().toISOString()): GameState {
     playerSettings: {
       animation: "full",
       fontScale: "normal",
-      theme: "night",
-      highContrast: false,
     },
     creatures: [creature],
     feedings: [],
