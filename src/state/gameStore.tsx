@@ -12,6 +12,7 @@ import {
 import { starterHabitatItems } from "../data/habitatItems";
 import { createCreature } from "../domain/creature/createCreature";
 import { getActiveTemporaryEffects } from "../domain/creature/temporaryEffects";
+import { resolveTouch, type TouchZone } from "../domain/creature/resolveTouch";
 import { completeFeeding } from "../domain/feeding/completeFeeding";
 import { buildJournalEntry, dateKey } from "../domain/journal/buildJournalEntry";
 import { processOfflineTime } from "../domain/time/processOfflineTime";
@@ -23,9 +24,12 @@ type GameAction =
   | { type: "initialize"; now: string }
   | { type: "tick"; now: string }
   | { type: "feed"; input: FeedingInput }
-  | { type: "touch"; now: string }
+  | { type: "touch"; zone: TouchZone; now: string }
+  | { type: "confirmFoodMeaning"; foodId: string }
+  | { type: "declineFoodNaming"; foodId: string }
   | { type: "renameCreature"; creatureId: string; name: string }
   | { type: "toggleFurniture" }
+  | { type: "moveItem"; id: string; x: number; y: number }
   | { type: "import"; state: GameState }
   | { type: "reset"; now: string };
 
@@ -141,6 +145,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
     case "touch": {
       const creature = state.creatures[0];
+      const result = resolveTouch(creature, action.zone, action.now);
       return {
         ...state,
         creatures: state.creatures.map((item) =>
@@ -150,10 +155,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
                 lastInteractionAt: action.now,
                 activeTemporaryEffects: [
                   {
-                    id: `touch-${action.now}`,
-                    label: "牠把觸碰留在身體邊緣",
+                    id: `touch-${result.outcome}-${action.now}`,
+                    label: result.line,
                     until: new Date(
-                      new Date(action.now).getTime() + 1000 * 60 * 10,
+                      new Date(action.now).getTime() + 1000 * 60 * 8,
                     ).toISOString(),
                   },
                   ...getActiveTemporaryEffects(item.activeTemporaryEffects, action.now),
@@ -162,6 +167,48 @@ function gameReducer(state: GameState, action: GameAction): GameState {
             : item,
         ),
         lastVisitAt: action.now,
+      };
+    }
+    case "confirmFoodMeaning": {
+      const creature = state.creatures[0];
+      const memory = creature.foodMemory[action.foodId];
+      if (!memory) {
+        return state;
+      }
+      return {
+        ...state,
+        creatures: state.creatures.map((item) =>
+          item.id === creature.id
+            ? {
+                ...item,
+                foodMemory: {
+                  ...item.foodMemory,
+                  [action.foodId]: { ...memory, confirmedByPlayer: true },
+                },
+              }
+            : item,
+        ),
+      };
+    }
+    case "declineFoodNaming": {
+      const creature = state.creatures[0];
+      const memory = creature.foodMemory[action.foodId];
+      if (!memory) {
+        return state;
+      }
+      return {
+        ...state,
+        creatures: state.creatures.map((item) =>
+          item.id === creature.id
+            ? {
+                ...item,
+                foodMemory: {
+                  ...item.foodMemory,
+                  [action.foodId]: { ...memory, namingDeclined: true },
+                },
+              }
+            : item,
+        ),
       };
     }
     case "renameCreature": {
@@ -176,6 +223,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ),
       };
     }
+    case "moveItem":
+      return {
+        ...state,
+        habitat: {
+          ...state.habitat,
+          items: state.habitat.items.map((item) =>
+            item.id === action.id ? { ...item, x: action.x, y: action.y } : item,
+          ),
+        },
+      };
     case "toggleFurniture":
       return {
         ...state,

@@ -82,6 +82,7 @@ export type FoodMeaningMemory = {
   dominantMeaningId: string | null;
   confidence: number;
   confirmedByPlayer: boolean;
+  namingDeclined?: boolean;
   customLabel?: string;
 };
 

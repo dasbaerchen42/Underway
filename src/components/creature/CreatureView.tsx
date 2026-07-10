@@ -1,10 +1,17 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { deriveVisualProfile } from "../../domain/creature/deriveVisualProfile";
+import type { TouchZone } from "../../domain/creature/resolveTouch";
 import type { Creature } from "../../types";
 
 const tendrilSlots = ["one", "two", "three"] as const;
 
-export function CreatureView({ creature }: { creature: Creature }) {
+export function CreatureView({
+  creature,
+  onTouch,
+}: {
+  creature: Creature;
+  onTouch: (zone: TouchZone) => void;
+}) {
   const reduced = useMemo(
     () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false,
     [],
@@ -13,6 +20,7 @@ export function CreatureView({ creature }: { creature: Creature }) {
   const profile = deriveVisualProfile(creature);
   const [pos, setPos] = useState({ x: 50, y: 54 });
   const [gaze, setGaze] = useState({ x: 0, y: 0 });
+  const [fleeing, setFleeing] = useState(false);
 
   // 在觀測區裡緩慢遊走：每 9~18 秒挑一個新位置，transition 慢慢飄過去。
   useEffect(() => {
@@ -78,11 +86,37 @@ export function CreatureView({ creature }: { creature: Creature }) {
     "--gaze-y": gaze.y,
   } as CSSProperties;
   const reaction = creature.activeTemporaryEffects[0];
-  const reactionType = reaction?.id.startsWith("touch-") ? "touch" : reaction ? "feeding" : "idle";
+  const reactionType = reaction
+    ? reaction.id.startsWith("touch-")
+      ? reaction.id.split("-")[1]
+      : "feeding"
+    : "idle";
+
+  // 被摸但今天不想:快速滑到別的地方
+  const lastFlee = useRef("");
+  useEffect(() => {
+    if (!reaction || !reaction.id.startsWith("touch-retreat") || lastFlee.current === reaction.id) {
+      return;
+    }
+    lastFlee.current = reaction.id;
+    setFleeing(true);
+    setPos((current) => ({
+      x: current.x > 50 ? 28 + Math.random() * 8 : 64 + Math.random() * 8,
+      y: 42 + Math.random() * 18,
+    }));
+    const handle = window.setTimeout(() => setFleeing(false), 2400);
+    return () => window.clearTimeout(handle);
+  }, [reaction]);
+
+  const handleTouch = (event: React.MouseEvent<HTMLDivElement>) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    const ratio = (event.clientY - box.top) / box.height;
+    onTouch(ratio < 0.4 ? "head" : ratio < 0.72 ? "body" : "tail");
+  };
 
   return (
     <div
-      className={`creature-wrap reaction-${reactionType}`}
+      className={`creature-wrap reaction-${reactionType} ${fleeing ? "fleeing" : ""}`}
       style={style}
       aria-label={`${creature.name} 的外觀`}
     >
@@ -91,7 +125,20 @@ export function CreatureView({ creature }: { creature: Creature }) {
           <span className={`tendril tendril-${slot}`} key={slot} />
         ))}
       </div>
-      <div className="creature" key={reaction?.id ?? "idle"}>
+      <div
+        className="creature"
+        key={reaction?.id ?? "idle"}
+        onClick={handleTouch}
+        role="button"
+        tabIndex={0}
+        aria-label="觸摸牠"
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onTouch("body");
+          }
+        }}
+      >
         <div className="creature-core" />
         <div className="face-rig" aria-hidden="true">
           <span className="creature-brow brow-left" />

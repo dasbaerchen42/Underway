@@ -230,6 +230,31 @@ h2 {
   border-color: var(--select-border);
 }
 
+.memory-question {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(145, 183, 196, 0.08);
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.memory-question p {
+  margin: 0;
+  line-height: 1.9;
+}
+
+.memory-question-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.memory-question-actions button {
+  min-height: 40px;
+  font-size: 0.86rem;
+}
+
 .note-field,
 .select-row {
   display: grid;

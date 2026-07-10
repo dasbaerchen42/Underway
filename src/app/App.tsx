@@ -34,6 +34,8 @@ function AppShell() {
           phase={phase.phase}
           showFurniture={state.habitat.showFurniture}
           onToggleFurniture={() => dispatch({ type: "toggleFurniture" })}
+          onTouch={(zone) => dispatch({ type: "touch", zone, now: new Date().toISOString() })}
+          onMoveItem={(id, x, y) => dispatch({ type: "moveItem", id, x, y })}
         />
         <div className="status-bar" aria-live="polite">
           <div className="status-row">
@@ -92,12 +94,6 @@ function AppShell() {
         )}
         {view === "settings" && <SettingsPanel />}
 
-        <button
-          className="touch-button"
-          onClick={() => dispatch({ type: "touch", now: new Date().toISOString() })}
-        >
-          觸摸箱庭邊緣
-        </button>
       </section>
     </main>
   );
