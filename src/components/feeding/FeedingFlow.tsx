@@ -6,15 +6,56 @@ import { useGame } from "../../state/gameStore";
 import type { Creature } from "../../types";
 
 export function FeedingFlow({ creature }: { creature: Creature }) {
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
   const [foodId, setFoodId] = useState(foods[0].id);
   const [meaningId, setMeaningId] = useState(meanings[0].id);
   const [careIntentId, setCareIntentId] = useState(careIntents[0].id);
   const [note, setNote] = useState("");
   const [showNoteInJournal, setShowNoteInJournal] = useState(true);
+  const [dismissedFeedingId, setDismissedFeedingId] = useState<string | null>(null);
+
+  // 食物意義的試探確認(規格 §11.1):用滿三次、這次又是主導意義時,輕輕問一次。
+  const latest = state.feedings[0];
+  const latestMemory = latest ? creature.foodMemory[latest.foodId] : undefined;
+  const askConfirm =
+    latest &&
+    latestMemory &&
+    !latestMemory.confirmedByPlayer &&
+    !latestMemory.namingDeclined &&
+    latestMemory.uses >= 3 &&
+    latestMemory.dominantMeaningId === latest.meaningId &&
+    dismissedFeedingId !== latest.id;
+  const latestFoodName = foods.find((food) => food.id === latest?.foodId)?.name ?? "食物";
+  const dominantMeaningLabel =
+    meanings.find((meaning) => meaning.id === latestMemory?.dominantMeaningId)?.label ?? "";
 
   return (
     <section className="tool-panel feeding-panel">
+      {askConfirm && (
+        <div className="memory-question" aria-live="polite">
+          <p>
+            今天的{latestFoodName}，也要放進「{dominantMeaningLabel}」的那個小盒子裡嗎？
+          </p>
+          <div className="memory-question-actions">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "confirmFoodMeaning", foodId: latest.foodId })}
+            >
+              是，就是那裡
+            </button>
+            <button type="button" onClick={() => setDismissedFeedingId(latest.id)}>
+              今天不一樣
+            </button>
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "declineFoodNaming", foodId: latest.foodId })}
+            >
+              不用替它命名
+            </button>
+          </div>
+        </div>
+      )}
+
       <fieldset>
         <legend>食物</legend>
         <div className="option-grid food-grid">

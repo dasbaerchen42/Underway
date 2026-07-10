@@ -24,6 +24,7 @@
   position: absolute;
   inset: 18% 12% 16%;
   z-index: 4;
+  cursor: pointer;
   border-radius: calc(30% + var(--softness) * 0.34%);
   background:
     radial-gradient(circle at 52% 55%, rgba(52, 74, 82, calc(0.12 + var(--dark-core) * 0.003)), transparent 23%),
@@ -115,14 +116,31 @@
   animation-duration: 2.4s;
 }
 
-/* 觸碰反應:挑眉 + 眼睛微睜 */
-.reaction-touch .creature-brow {
+/* 觸碰接受:挑眉 + 眼睛微睜 */
+.reaction-accept .creature-brow {
   opacity: 1;
   --brow-lift: -3px;
 }
 
-.reaction-touch .creature-eye {
+.reaction-accept .creature-eye {
   scale: 1.2;
+}
+
+/* 觸手回應:觸手短暫加速擺動 */
+.reaction-tendril .tendril {
+  animation-duration: 1.9s;
+}
+
+/* 想自己待著:躲開時快速滑走、身體縮小一號 */
+.creature-wrap.fleeing {
+  transition:
+    left 2.2s cubic-bezier(0.3, 0, 0.2, 1),
+    top 2.2s cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+.reaction-retreat .creature {
+  scale: 0.93;
+  transition: scale 600ms ease;
 }
 
 .tendril,
