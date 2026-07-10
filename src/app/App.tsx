@@ -12,16 +12,12 @@ function AppShell() {
   const { state, dispatch, currentTime } = useGame();
   const [view, setView] = useState<View>("feed");
   const creature = state.creatures[0];
-  const settings = state.playerSettings;
   const phase = useMemo(() => calculateWorldPhase(new Date(currentTime)), [currentTime]);
   const latestFeeding = state.feedings[0];
   const recentReaction = creature.activeTemporaryEffects[0]?.label ?? "牠正在慢慢呼吸。";
 
   return (
-    <main
-      className={`app-shell font-${settings.fontScale}`}
-      data-motion={settings.animation}
-    >
+    <main className="app-shell">
       <section className="stage-column" aria-label="箱庭舞台">
         <header className="topbar">
           <div>
@@ -33,19 +29,18 @@ function AppShell() {
           </div>
         </header>
         <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />
-      </section>
-
-      <section className="panel-column" aria-label="操作面板">
         <div className="status-bar" aria-live="polite">
           <div className="status-row">
             <span>最近反應</span>
             <strong>{recentReaction}</strong>
           </div>
           <p className="status-echo">
-            {latestFeeding?.dialogue ?? "牠在等第一份餵食,也在等你不必說清楚的那一部分。"}
+            {latestFeeding?.dialogue ?? "牠在等第一份餵食，也在等你不必說清楚的那一部分。"}
           </p>
         </div>
+      </section>
 
+      <section className="panel-column" aria-label="操作面板">
         <nav className="tabbar" aria-label="主要分頁">
           <button className={view === "feed" ? "active" : ""} onClick={() => setView("feed")}>
             餵食
@@ -69,7 +64,7 @@ function AppShell() {
         {view === "atlas" && (
           <section className="tool-panel atlas-panel">
             <h2>觀察圖鑑</h2>
-            <p>只記錄已出現的形態,不列出稀有度。</p>
+            <p>只記錄已出現的形態，不列出稀有度。</p>
             <div className="trait-grid">
               {[
                 ["觸手", creature.appearance.tendrils],

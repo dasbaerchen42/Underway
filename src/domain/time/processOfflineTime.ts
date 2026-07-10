@@ -4,7 +4,7 @@ import type { Creature, FeedingRecord, HabitatItem, WorldEvent } from "../../typ
 
 const MAX_OFFLINE_EVENTS = 3;
 const MIN_OFFLINE_HOURS = 3;
-/** 離線超過這個小時數,視為跨過了一段夜 */
+/** 離線超過這個小時數，視為跨過了一段夜 */
 const NIGHT_CROSS_HOURS = 8;
 /** 判定「最近」的餵食紀錄範圍 */
 const RECENT_FEEDING_WINDOW = 20;
@@ -77,7 +77,7 @@ export function processOfflineTime(
     return { events: [], items };
   }
 
-  // seed 綁定這次離線區間:重新整理不會重擲事件內容
+  // seed 綁定這次離線區間：重新整理不會重擲事件內容
   const rng = createSeededRandom([creature.id, lastVisitAt, nowIso].join("-"));
   const kinds = new Set(items.map((item) => item.kind));
   const recentFruit = recentFeedings
@@ -88,7 +88,7 @@ export function processOfflineTime(
     isEligible(def, creature, kinds, elapsedHours, recentFruit),
   );
 
-  // 高優先度先選;同優先度之間用 seeded random 打散
+  // 高優先度先選；同優先度之間用 seeded random 打散
   const ranked = eligible
     .map((def) => ({ def, tiebreak: rng() }))
     .sort((a, b) => b.def.priority - a.def.priority || a.tiebreak - b.tiebreak)
@@ -104,7 +104,7 @@ export function processOfflineTime(
       const mover = nextItems.find((item) => item.kind === def.move!.itemKind);
       if (target && mover) {
         const x = clamp(target.x + (rng() * 16 - 8), 8, 92);
-        // 家具接地點必須留在地板帶(56~84),避免被搬到牆上浮空
+        // 家具接地點必須留在地板帶(56~84)，避免被搬到牆上浮空
         const y = clamp(target.y + (def.move!.offsetY ?? 0) + (rng() * 8 - 4), 56, 84);
         nextItems = nextItems.map((item) => (item.id === mover.id ? { ...item, x, y } : item));
       }

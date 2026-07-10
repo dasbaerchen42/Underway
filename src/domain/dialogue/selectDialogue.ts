@@ -9,7 +9,7 @@ import type {
   FeedingSignal,
 } from "../../types";
 
-// 相同台詞至少冷卻這麼多次互動(依規格 §12.4,保存最近台詞 ID)。
+// 相同台詞至少冷卻這麼多次互動(依規格 §12.4，保存最近台詞 ID)。
 export const DIALOGUE_COOLDOWN = 8;
 
 export type DialogueContext = {

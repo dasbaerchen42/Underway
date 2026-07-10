@@ -12,7 +12,7 @@ import type {
   WorldEvent,
 } from "../types";
 
-export const CURRENT_SCHEMA_VERSION = 4;
+export const CURRENT_SCHEMA_VERSION = 5;
 
 const traitKeys: AppearanceTraitKey[] = [
   "tendrils",
@@ -251,7 +251,6 @@ export function migrateState(value: unknown): GameState | null {
   if (creatures.length === 0) {
     creatures.push(createCreature(now));
   }
-  const settings = isRecord(value.playerSettings) ? value.playerSettings : {};
   const habitat = isRecord(value.habitat) ? value.habitat : {};
   const habitatItems = Array.isArray(habitat.items)
     ? habitat.items
@@ -274,10 +273,6 @@ export function migrateState(value: unknown): GameState | null {
 
   return {
     schemaVersion: CURRENT_SCHEMA_VERSION,
-    playerSettings: {
-      animation: settings.animation === "reduced" ? "reduced" : "full",
-      fontScale: settings.fontScale === "large" ? "large" : "normal",
-    },
     creatures,
     feedings,
     journalEntries: [...journalDates]
@@ -289,7 +284,7 @@ export function migrateState(value: unknown): GameState | null {
     lastSettlementDate: isString(value.lastSettlementDate)
       ? value.lastSettlementDate
       : dateKey(now),
-    // initialized 是 session 範圍的旗標:讀進來的存檔一律重新結算離線時間。
+    // initialized 是 session 範圍的旗標：讀進來的存檔一律重新結算離線時間。
     initialized: false,
   };
 }
