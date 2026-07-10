@@ -72,10 +72,10 @@
   display: block;
 }
 
-/* 水母式觸手:三節嵌套節段,同頻率、相位遞延,形成往末端傳遞的波。 */
+/* 水母式觸手:三節嵌套節段,同頻率、相位遞延,形成往末端傳遞的波。
+   錨點貼著鐘形體的外緣:側邊兩根掛在左右下緣的弧線上、往外張,中間一根垂在底緣。 */
 .tendril {
   --phase: 0s;
-  bottom: 2%;
   width: 13px;
   height: calc(30px + var(--tendrils, 20) * 0.45px);
   border-radius: 999px;
@@ -88,20 +88,23 @@
 }
 
 .tendril-one {
-  left: 24%;
-  rotate: 10deg;
+  left: 3%;
+  top: 52%;
+  rotate: 24deg;
 }
 
 .tendril-two {
   --phase: -2.1s;
-  left: 47%;
+  left: 46%;
+  top: 78%;
   height: calc(38px + var(--tendrils, 20) * 0.52px);
 }
 
 .tendril-three {
   --phase: -4.3s;
-  right: 21%;
-  rotate: -9deg;
+  right: 3%;
+  top: 52%;
+  rotate: -24deg;
 }
 
 .tendril-seg {
