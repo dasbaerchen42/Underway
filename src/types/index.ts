@@ -219,14 +219,8 @@ export type JournalEntry = {
   markdown: string;
 };
 
-export type PlayerSettings = {
-  animation: "full" | "reduced";
-  fontScale: "normal" | "large";
-};
-
 export type GameState = {
   schemaVersion: number;
-  playerSettings: PlayerSettings;
   creatures: Creature[];
   feedings: FeedingRecord[];
   journalEntries: JournalEntry[];

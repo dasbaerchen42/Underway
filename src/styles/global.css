@@ -51,9 +51,11 @@ legend {
 }
 
 .app-shell {
+  --stage-size: min(66vh, 690px, 46vw);
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
+  grid-template-columns: repeat(2, var(--stage-size));
+  justify-content: center;
   gap: 18px;
   padding: 18px;
   background:
@@ -65,12 +67,11 @@ legend {
 
 .status-bar {
   border: 1px solid var(--line);
-  border-left: 3px solid var(--glass-blue);
   border-radius: var(--radius);
   background: var(--panel);
   backdrop-filter: blur(18px);
   padding: 12px 16px;
-  margin-bottom: 12px;
+  margin-top: 14px;
   display: grid;
   gap: 4px;
 }
@@ -284,20 +285,13 @@ select {
   margin-top: 12px;
 }
 
-.latest-response,
 .storage-warning {
-  border-left: 4px solid var(--glass-blue);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.04);
 }
 
-.latest-response span {
-  font-size: 0.84rem;
-  font-weight: 800;
-  color: var(--text-dim);
-}
-
-.latest-response p,
 .journal-entry p,
 .storage-warning {
   margin: 6px 0 0;
@@ -376,16 +370,6 @@ meter {
   min-height: 44px;
 }
 
-.font-large {
-  font-size: 112%;
-}
-
-[data-motion="reduced"] *,
-[data-motion="reduced"] *::before,
-[data-motion="reduced"] *::after {
-  animation-duration: 1ms !important;
-  transition-duration: 1ms !important;
-}
 
 @media (prefers-reduced-motion: reduce) {
   *,

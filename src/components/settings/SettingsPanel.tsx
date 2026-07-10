@@ -5,7 +5,6 @@ export function SettingsPanel() {
   const { state, dispatch, exportJson, importJson, resetGame, storageError } = useGame();
   const fileRef = useRef<HTMLInputElement>(null);
   const [importMessage, setImportMessage] = useState<string | null>(null);
-  const settings = state.playerSettings;
   const creature = state.creatures[0];
 
   return (
@@ -33,38 +32,6 @@ export function SettingsPanel() {
           }
           type="text"
         />
-      </label>
-
-      <label className="select-row">
-        動畫強度
-        <select
-          value={settings.animation}
-          onChange={(event) =>
-            dispatch({
-              type: "setSettings",
-              settings: { ...settings, animation: event.target.value as "full" | "reduced" },
-            })
-          }
-        >
-          <option value="full">完整</option>
-          <option value="reduced">減少</option>
-        </select>
-      </label>
-
-      <label className="select-row">
-        字體大小
-        <select
-          value={settings.fontScale}
-          onChange={(event) =>
-            dispatch({
-              type: "setSettings",
-              settings: { ...settings, fontScale: event.target.value as "normal" | "large" },
-            })
-          }
-        >
-          <option value="normal">標準</option>
-          <option value="large">較大</option>
-        </select>
       </label>
 
       <div className="settings-actions">
@@ -95,7 +62,7 @@ export function SettingsPanel() {
         }}
       />
       {importMessage && <p className="storage-warning">{importMessage}</p>}
-      <p className="storage-warning">清除瀏覽器資料可能遺失存檔;匯出 JSON 可保留完整狀態。</p>
+      <p className="storage-warning">清除瀏覽器資料可能遺失存檔；匯出 JSON 可保留完整狀態。</p>
     </section>
   );
 }

@@ -21,7 +21,6 @@ describe("migrateState", () => {
     expect(state?.creatures).toHaveLength(1);
     expect(state?.creatures[0].appearance).toBeDefined();
     expect(state?.creatures[0].recentDialogueIds).toEqual([]);
-    expect(state?.playerSettings.fontScale).toBe("large");
     expect(state?.initialized).toBe(false);
     expect(state?.habitat.items.length).toBeGreaterThan(0);
   });
@@ -63,8 +62,9 @@ describe("migrateState", () => {
     const state = migrateState({
       creatures: [{}],
       feedings: [],
-      playerSettings: { theme: "neon", highContrast: true },
+      playerSettings: { theme: "neon", highContrast: true, fontScale: "large" },
     });
-    expect(state?.playerSettings).toEqual({ animation: "full", fontScale: "normal" });
+    expect(state).not.toBeNull();
+    expect("playerSettings" in (state ?? {})).toBe(false);
   });
 });

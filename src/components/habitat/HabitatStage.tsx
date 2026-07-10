@@ -6,7 +6,7 @@ const WALL_KINDS = new Set(["curtain"]);
 const FLOOR_TOP = 52;
 const FLOOR_BOTTOM = 84;
 
-// y 越大越靠近觀察者:縮放放大、z-index 提前,物件底部錨定在 y(接地)。
+// y 越大越靠近觀察者：縮放放大、z-index 提前，物件底部錨定在 y(接地)。
 function floorDepth(y: number) {
   return Math.min(1, Math.max(0, (y - FLOOR_TOP) / (FLOOR_BOTTOM - FLOOR_TOP)));
 }

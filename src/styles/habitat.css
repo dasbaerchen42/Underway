@@ -1,6 +1,6 @@
 .habitat-stage {
   position: relative;
-  min-height: clamp(420px, 68vh, 760px);
+  aspect-ratio: 1;
   margin-top: 16px;
   overflow: hidden;
   border: 1px solid rgba(201, 216, 220, 0.2);

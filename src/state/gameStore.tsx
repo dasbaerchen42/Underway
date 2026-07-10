@@ -17,7 +17,7 @@ import { buildJournalEntry, dateKey } from "../domain/journal/buildJournalEntry"
 import { processOfflineTime } from "../domain/time/processOfflineTime";
 import { CURRENT_SCHEMA_VERSION, migrateState } from "../storage/migration";
 import { localStorageAdapter } from "../storage/localStorageAdapter";
-import type { FeedingInput, GameState, JournalEntry, PlayerSettings } from "../types";
+import type { FeedingInput, GameState, JournalEntry } from "../types";
 
 type GameAction =
   | { type: "initialize"; now: string }
@@ -25,7 +25,6 @@ type GameAction =
   | { type: "feed"; input: FeedingInput }
   | { type: "touch"; now: string }
   | { type: "renameCreature"; creatureId: string; name: string }
-  | { type: "setSettings"; settings: PlayerSettings }
   | { type: "import"; state: GameState }
   | { type: "reset"; now: string };
 
@@ -46,10 +45,6 @@ function createInitialState(now = new Date().toISOString()): GameState {
   const creature = createCreature(now);
   return {
     schemaVersion: CURRENT_SCHEMA_VERSION,
-    playerSettings: {
-      animation: "full",
-      fontScale: "normal",
-    },
     creatures: [creature],
     feedings: [],
     journalEntries: [buildJournalEntry(dateKey(now), [], [])],
@@ -180,8 +175,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ),
       };
     }
-    case "setSettings":
-      return { ...state, playerSettings: action.settings };
     case "import":
       return { ...action.state, initialized: true };
     case "reset":
@@ -207,7 +200,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "initialize", now });
   }, []);
 
-  // 30 秒對時:光巡階段前進、暫時效果過期、跨午夜換日記。
+  // 30 秒對時：光巡階段前進、暫時效果過期、跨午夜換日記。
   useEffect(() => {
     const syncClock = () => {
       const now = new Date().toISOString();

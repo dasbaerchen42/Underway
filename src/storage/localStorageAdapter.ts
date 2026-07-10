@@ -33,7 +33,7 @@ export const localStorageAdapter: StorageAdapter = {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       return { ok: true };
     } catch {
-      return { ok: false, message: "無法儲存進度,瀏覽器空間可能不足。" };
+      return { ok: false, message: "無法儲存進度，瀏覽器空間可能不足。" };
     }
   },
   backup(state) {
@@ -42,7 +42,7 @@ export const localStorageAdapter: StorageAdapter = {
       window.localStorage.setItem(BACKUP_KEY, JSON.stringify([state, ...backups].slice(0, 3)));
       return { ok: true };
     } catch {
-      return { ok: false, message: "主要進度已儲存,但無法更新備份。" };
+      return { ok: false, message: "主要進度已儲存，但無法更新備份。" };
     }
   },
   clear() {

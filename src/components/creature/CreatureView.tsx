@@ -1,19 +1,20 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { deriveVisualProfile } from "../../domain/creature/deriveVisualProfile";
-import { useGame } from "../../state/gameStore";
 import type { Creature } from "../../types";
 
 const tendrilSlots = ["one", "two", "three"] as const;
 
 export function CreatureView({ creature }: { creature: Creature }) {
-  const { state } = useGame();
-  const reduced = state.playerSettings.animation === "reduced";
+  const reduced = useMemo(
+    () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false,
+    [],
+  );
   const appearance = creature.appearance;
   const profile = deriveVisualProfile(creature);
   const [pos, setPos] = useState({ x: 50, y: 54 });
   const [gaze, setGaze] = useState({ x: 0, y: 0 });
 
-  // 在觀測區裡緩慢遊走:每 9~18 秒挑一個新位置,transition 慢慢飄過去。
+  // 在觀測區裡緩慢遊走：每 9~18 秒挑一個新位置，transition 慢慢飄過去。
   useEffect(() => {
     if (reduced) {
       return;
@@ -34,7 +35,7 @@ export function CreatureView({ creature }: { creature: Creature }) {
     };
   }, [reduced]);
 
-  // 視線游移:滑向一個方向、停一會兒,偶爾回到正面看你。
+  // 視線游移：滑向一個方向、停一會兒，偶爾回到正面看你。
   useEffect(() => {
     if (reduced) {
       return;
@@ -48,7 +49,7 @@ export function CreatureView({ creature }: { creature: Creature }) {
       setGaze(
         Math.random() < 0.28
           ? { x: 0, y: 0 }
-          : { x: Math.random() * 2 - 1, y: Math.random() * 1.6 - 0.8 },
+          : { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 },
       );
       timer = window.setTimeout(glance, 1600 + Math.random() * 3400);
     };
@@ -62,7 +63,7 @@ export function CreatureView({ creature }: { creature: Creature }) {
   const style = {
     left: `${pos.x}%`,
     top: `${pos.y}%`,
-    // 跟家具一起做深度排序:身體底部大約在中心點往下 24%
+    // 跟家具一起做深度排序：身體底部大約在中心點往下 24%
     zIndex: Math.round(pos.y + 24),
     "--blue": appearance.hueBlue,
     "--amber": appearance.hueAmber,

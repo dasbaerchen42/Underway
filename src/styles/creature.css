@@ -64,16 +64,16 @@
 
 .creature-eye {
   position: absolute;
-  top: 36%;
+  top: 38%;
   width: 8px;
-  height: 8px;
+  height: 10px;
   border-radius: 50%;
-  background: rgba(52, 74, 82, 0.62);
+  background: rgba(52, 74, 82, 0.66);
   animation: blink 7s ease-in-out infinite;
   transform-origin: center;
-  /* 視線游移:JS 更新 --gaze-x/--gaze-y,眼點滑過去再停住 */
-  translate: calc(var(--gaze-x, 0) * 4px) calc(var(--gaze-y, 0) * 2.6px);
-  transition: translate 640ms cubic-bezier(0.3, 0, 0.2, 1);
+  /* 視線游移:JS 更新 --gaze-x/--gaze-y,活動範圍幾乎遍布整張臉 */
+  translate: calc(var(--gaze-x, 0) * 20px) calc(var(--gaze-y, 0) * 13px);
+  transition: translate 720ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
 .eye-left {
@@ -93,10 +93,10 @@
   border-radius: 999px;
   background: rgba(52, 74, 82, 0.4);
   opacity: 0;
-  translate: calc(var(--gaze-x, 0) * 2px) calc(var(--gaze-y, 0) * 1.2px + var(--brow-lift, 0px));
+  translate: calc(var(--gaze-x, 0) * 20px) calc(var(--gaze-y, 0) * 13px + var(--brow-lift, 0px));
   transition:
     opacity 300ms ease,
-    translate 640ms cubic-bezier(0.3, 0, 0.2, 1),
+    translate 720ms cubic-bezier(0.3, 0, 0.2, 1),
     rotate 300ms ease;
 }
 
@@ -110,13 +110,7 @@
   rotate: 8deg;
 }
 
-/* 進食反應:瞇成弧線的滿足眼 + 核心加速脈動 */
-.reaction-feeding .creature-eye {
-  height: 4px;
-  border-radius: 0 0 999px 999px;
-  animation: none;
-}
-
+/* 進食反應:核心加速脈動(眼睛維持豆豆眼) */
 .reaction-feeding .creature-core {
   animation-duration: 2.4s;
 }
@@ -163,9 +157,9 @@
 }
 
 .tendril-one {
-  left: 30%;
-  top: 63%;
-  rotate: 12deg;
+  left: 18%;
+  top: 60%;
+  rotate: 16deg;
 }
 
 .tendril-two {
@@ -177,9 +171,9 @@
 }
 
 .tendril-three {
-  right: 30%;
-  top: 63%;
-  rotate: -12deg;
+  right: 18%;
+  top: 60%;
+  rotate: -16deg;
   animation-duration: 5.2s;
   animation-delay: -3.8s;
 }
@@ -326,10 +320,10 @@
 @keyframes tendril-sway {
   0%,
   100% {
-    transform: rotate(-5deg) skewX(-3deg);
+    transform: rotate(-13deg) skewX(-5deg);
   }
   50% {
-    transform: rotate(6deg) skewX(4deg);
+    transform: rotate(14deg) skewX(6deg);
   }
 }
 

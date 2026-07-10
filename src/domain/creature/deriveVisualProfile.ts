@@ -1,6 +1,6 @@
 import type { Creature } from "../../types";
 
-// 把外觀數值轉成畫面上的粒子與部件數量,讓身體隨長期變化「長出」更多細節。
+// 把外觀數值轉成畫面上的粒子與部件數量，讓身體隨長期變化「長出」更多細節。
 export type CreatureVisualProfile = {
   moteCount: number;
   tendrilCount: number;
