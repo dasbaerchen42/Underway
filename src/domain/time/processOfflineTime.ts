@@ -103,8 +103,9 @@ export function processOfflineTime(
       const target = nextItems.find((item) => item.kind === def.move!.nearKind);
       const mover = nextItems.find((item) => item.kind === def.move!.itemKind);
       if (target && mover) {
-        const x = clamp(target.x + (rng() * 16 - 8), 6, 92);
-        const y = clamp(target.y + (def.move!.offsetY ?? 0) + (rng() * 8 - 4), 8, 88);
+        const x = clamp(target.x + (rng() * 16 - 8), 8, 92);
+        // 家具接地點必須留在地板帶(56~84),避免被搬到牆上浮空
+        const y = clamp(target.y + (def.move!.offsetY ?? 0) + (rng() * 8 - 4), 56, 84);
         nextItems = nextItems.map((item) => (item.id === mover.id ? { ...item, x, y } : item));
       }
     }

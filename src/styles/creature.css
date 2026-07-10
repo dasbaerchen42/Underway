@@ -8,11 +8,22 @@
   transform: translate(-50%, -50%);
   z-index: 4;
   animation: float 8s ease-in-out infinite;
+  /* 遊走:JS 換目標點,transition 讓牠慢慢飄過去 */
+  transition:
+    left 8.5s cubic-bezier(0.45, 0, 0.35, 1),
+    top 8.5s cubic-bezier(0.45, 0, 0.35, 1);
+}
+
+.tendril-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
 }
 
 .creature {
   position: absolute;
   inset: 18% 12% 16%;
+  z-index: 4;
   border-radius: calc(30% + var(--softness) * 0.34%);
   background:
     radial-gradient(circle at 52% 55%, rgba(52, 74, 82, calc(0.12 + var(--dark-core) * 0.003)), transparent 23%),
@@ -60,6 +71,9 @@
   background: rgba(52, 74, 82, 0.62);
   animation: blink 7s ease-in-out infinite;
   transform-origin: center;
+  /* 視線游移:JS 更新 --gaze-x/--gaze-y,眼點滑過去再停住 */
+  translate: calc(var(--gaze-x, 0) * 4px) calc(var(--gaze-y, 0) * 2.6px);
+  transition: translate 640ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
 .eye-left {
@@ -79,9 +93,10 @@
   border-radius: 999px;
   background: rgba(52, 74, 82, 0.4);
   opacity: 0;
+  translate: calc(var(--gaze-x, 0) * 2px) calc(var(--gaze-y, 0) * 1.2px + var(--brow-lift, 0px));
   transition:
     opacity 300ms ease,
-    translate 300ms ease,
+    translate 640ms cubic-bezier(0.3, 0, 0.2, 1),
     rotate 300ms ease;
 }
 
@@ -109,7 +124,7 @@
 /* 觸碰反應:挑眉 + 眼睛微睜 */
 .reaction-touch .creature-brow {
   opacity: 1;
-  translate: 0 -3px;
+  --brow-lift: -3px;
 }
 
 .reaction-touch .creature-eye {
@@ -127,10 +142,11 @@
 
 /* 水母觸手:單純的一根圓滑膠囊,尖端用遮罩淡出(視覺上變細收尾),
    擺動是柔和的鐘擺 + 一點 skew 的軟感;沒有接縫、沒有稜角。
-   錨點貼著鐘形體外緣:側邊兩根從左右下緣往外垂,中間一根從底緣垂下。 */
+   根部藏在身體內部靠近下緣(觸手層在身體後面),看起來是從體內長出來垂下。 */
 .tendril {
+  position: absolute;
   width: 10px;
-  height: calc(46px + var(--tendrils, 20) * 0.8px);
+  height: calc(78px + var(--tendrils, 20) * 0.9px);
   border-radius: 999px;
   background: linear-gradient(
     180deg,
@@ -147,23 +163,23 @@
 }
 
 .tendril-one {
-  left: 4%;
-  top: 52%;
-  rotate: 20deg;
+  left: 30%;
+  top: 63%;
+  rotate: 12deg;
 }
 
 .tendril-two {
-  left: 46%;
-  top: 78%;
-  height: calc(58px + var(--tendrils, 20) * 0.95px);
+  left: 47%;
+  top: 67%;
+  height: calc(88px + var(--tendrils, 20) * 1.05px);
   animation-duration: 6.6s;
   animation-delay: -2.2s;
 }
 
 .tendril-three {
-  right: 4%;
-  top: 52%;
-  rotate: -20deg;
+  right: 30%;
+  top: 63%;
+  rotate: -12deg;
   animation-duration: 5.2s;
   animation-delay: -3.8s;
 }

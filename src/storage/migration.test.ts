@@ -21,7 +21,7 @@ describe("migrateState", () => {
     expect(state?.creatures).toHaveLength(1);
     expect(state?.creatures[0].appearance).toBeDefined();
     expect(state?.creatures[0].recentDialogueIds).toEqual([]);
-    expect(state?.playerSettings.theme).toBe("neon");
+    expect(state?.playerSettings.fontScale).toBe("large");
     expect(state?.initialized).toBe(false);
     expect(state?.habitat.items.length).toBeGreaterThan(0);
   });
@@ -59,8 +59,12 @@ describe("migrateState", () => {
     expect(creature?.recentDialogueIds).toEqual(["calm-1", "calm-2"]);
   });
 
-  it("defaults the theme to night for saves from before themes existed", () => {
-    const state = migrateState({ creatures: [{}], feedings: [] });
-    expect(state?.playerSettings.theme).toBe("night");
+  it("ignores settings fields that no longer exist", () => {
+    const state = migrateState({
+      creatures: [{}],
+      feedings: [],
+      playerSettings: { theme: "neon", highContrast: true },
+    });
+    expect(state?.playerSettings).toEqual({ animation: "full", fontScale: "normal" });
   });
 });

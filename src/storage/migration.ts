@@ -12,7 +12,7 @@ import type {
   WorldEvent,
 } from "../types";
 
-export const CURRENT_SCHEMA_VERSION = 3;
+export const CURRENT_SCHEMA_VERSION = 4;
 
 const traitKeys: AppearanceTraitKey[] = [
   "tendrils",
@@ -277,8 +277,6 @@ export function migrateState(value: unknown): GameState | null {
     playerSettings: {
       animation: settings.animation === "reduced" ? "reduced" : "full",
       fontScale: settings.fontScale === "large" ? "large" : "normal",
-      theme: settings.theme === "neon" ? "neon" : "night",
-      highContrast: settings.highContrast === true,
     },
     creatures,
     feedings,

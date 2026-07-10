@@ -5,19 +5,8 @@ import { JournalPage } from "../components/journal/JournalPage";
 import { SettingsPanel } from "../components/settings/SettingsPanel";
 import { GameProvider, useGame } from "../state/gameStore";
 import { calculateWorldPhase } from "../domain/time/calculateWorldPhase";
-import type { AppearanceTraitKey } from "../types";
 
 type View = "feed" | "journal" | "atlas" | "settings";
-
-const traitLabels: Record<AppearanceTraitKey, string> = {
-  tendrils: "觸手",
-  membrane: "薄膜",
-  crystals: "結晶",
-  flora: "花芽",
-  horns: "小角",
-  floatingMotes: "漂浮光點",
-  darkCore: "深色核心",
-};
 
 function AppShell() {
   const { state, dispatch, currentTime } = useGame();
@@ -25,13 +14,12 @@ function AppShell() {
   const creature = state.creatures[0];
   const settings = state.playerSettings;
   const phase = useMemo(() => calculateWorldPhase(new Date(currentTime)), [currentTime]);
-  const visibleTraits = creature.unlockedTraits.length
-    ? creature.unlockedTraits.map((trait) => traitLabels[trait]).join("、")
-    : "尚未命名的細微傾向";
+  const latestFeeding = state.feedings[0];
+  const recentReaction = creature.activeTemporaryEffects[0]?.label ?? "牠正在慢慢呼吸。";
 
   return (
     <main
-      className={`app-shell theme-${settings.theme} ${settings.highContrast ? "high-contrast" : ""} font-${settings.fontScale}`}
+      className={`app-shell font-${settings.fontScale}`}
       data-motion={settings.animation}
     >
       <section className="stage-column" aria-label="箱庭舞台">
@@ -40,48 +28,24 @@ function AppShell() {
             <p className="kicker">共鳴箱庭</p>
             <h1>霧潮溫室</h1>
           </div>
-          <div className="topbar-side">
-            <div className="theme-toggle" aria-label="主題切換">
-              <button
-                aria-pressed={settings.theme === "night"}
-                className={settings.theme === "night" ? "active" : ""}
-                onClick={() =>
-                  dispatch({ type: "setSettings", settings: { ...settings, theme: "night" } })
-                }
-                type="button"
-              >
-                夜霧
-              </button>
-              <button
-                aria-pressed={settings.theme === "neon"}
-                className={settings.theme === "neon" ? "active" : ""}
-                onClick={() =>
-                  dispatch({ type: "setSettings", settings: { ...settings, theme: "neon" } })
-                }
-                type="button"
-              >
-                霓虹
-              </button>
-            </div>
-            <div className="phase-pill" aria-label="當前光巡">
-              第 {phase.cycleNumber} 次光巡 · {phase.phase}
-            </div>
+          <div className="phase-pill" aria-label="當前光巡">
+            第 {phase.cycleNumber} 次光巡 · {phase.phase}
           </div>
         </header>
         <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />
-        <div className="creature-status" aria-live="polite">
-          <div>
-            <span>最近反應</span>
-            <strong>{creature.activeTemporaryEffects[0]?.label ?? "牠正在慢慢呼吸。"}</strong>
-          </div>
-          <div>
-            <span>已出現特徵</span>
-            <strong>{visibleTraits}</strong>
-          </div>
-        </div>
       </section>
 
       <section className="panel-column" aria-label="操作面板">
+        <div className="status-bar" aria-live="polite">
+          <div className="status-row">
+            <span>最近反應</span>
+            <strong>{recentReaction}</strong>
+          </div>
+          <p className="status-echo">
+            {latestFeeding?.dialogue ?? "牠在等第一份餵食,也在等你不必說清楚的那一部分。"}
+          </p>
+        </div>
+
         <nav className="tabbar" aria-label="主要分頁">
           <button className={view === "feed" ? "active" : ""} onClick={() => setView("feed")}>
             餵食
@@ -105,7 +69,7 @@ function AppShell() {
         {view === "atlas" && (
           <section className="tool-panel atlas-panel">
             <h2>觀察圖鑑</h2>
-            <p>只記錄已出現的形態，不列出稀有度。</p>
+            <p>只記錄已出現的形態,不列出稀有度。</p>
             <div className="trait-grid">
               {[
                 ["觸手", creature.appearance.tendrils],

@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark;
 
-  /* 夜霧調色盤(預設主題):霧白只留給文字與微光,底色沉入深墨藍。 */
+  /* 夜霧調色盤:霧白只留給文字與微光,底色沉入深墨藍。 */
   --mist: #f3f4ef;
   --pale-blue: #c9d8dc;
   --glass-blue: #91b7c4;
@@ -11,10 +11,10 @@
   --ink-soft: #16232a;
 
   --text: #e4ebe8;
-  --text-dim: rgba(228, 235, 232, 0.62);
+  --text-dim: rgba(228, 235, 232, 0.6);
   --panel: rgba(20, 32, 39, 0.72);
   --panel-raised: rgba(255, 255, 255, 0.05);
-  --line: rgba(201, 216, 220, 0.16);
+  --line: rgba(201, 216, 220, 0.14);
   --select-bg: rgba(145, 183, 196, 0.22);
   --select-border: rgba(201, 216, 220, 0.55);
   --page-glow: rgba(145, 183, 196, 0.08);
@@ -22,29 +22,12 @@
   --page-bottom: #0a1114;
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
   --radius: 8px;
+
+  /* 日系字感:圓體優先、小字級、寬字距、鬆行距。 */
   font-family:
-    "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* 霓虹主題:深海藍底、青光線條、暖黃與珊瑚粉點綴(移植自水族箱分支)。 */
-.theme-neon {
-  --mist: #edf9ff;
-  --pale-blue: #cbf6ff;
-  --glass-blue: #4de4ff;
-  --warm-rice: #ffd45f;
-  --moss: #39b98f;
-  --ink: #071329;
-  --ink-soft: #0f2341;
-
-  --text: #e9faff;
-  --text-dim: rgba(233, 250, 255, 0.66);
-  --panel: rgba(12, 31, 56, 0.72);
-  --panel-raised: rgba(144, 234, 255, 0.06);
-  --line: rgba(144, 234, 255, 0.24);
-  --select-bg: rgba(77, 228, 255, 0.16);
-  --select-border: rgba(144, 234, 255, 0.55);
-  --page-glow: rgba(77, 228, 255, 0.08);
-  --page-top: #0c2140;
-  --page-bottom: #050d1d;
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    "jf open 粉圓", "Huninn", "Zen Maru Gothic", "M PLUS Rounded 1c", "Kosugi Maru",
+    "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  line-height: 1.85;
 }

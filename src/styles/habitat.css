@@ -124,9 +124,18 @@
   filter: brightness(1.5);
 }
 
+/* 後牆:讓「房間」存在,牆與地板交界在 56% 高度。 */
+.back-wall {
+  position: absolute;
+  inset: 0 0 44%;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 8%, rgba(201, 216, 220, 0.06), transparent 62%),
+    linear-gradient(180deg, rgba(23, 36, 43, 0.42), rgba(16, 26, 32, 0.72));
+}
+
 .greenhouse-frame {
   position: absolute;
-  inset: 7% 8% 18%;
+  inset: 6% 7% 44%;
   border: 1px solid rgba(201, 216, 220, 0.2);
   border-bottom: 0;
   clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
@@ -155,22 +164,14 @@
 
 .floor-plane {
   position: absolute;
-  left: 6%;
-  right: 6%;
-  bottom: 8%;
-  height: 34%;
-  border-radius: 50% 50% 14% 14%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44%;
   background:
-    linear-gradient(180deg, rgba(201, 216, 220, 0.1), rgba(174, 190, 170, 0.07)),
-    repeating-linear-gradient(
-      90deg,
-      rgba(201, 216, 220, 0.07),
-      rgba(201, 216, 220, 0.07) 1px,
-      transparent 1px,
-      transparent 54px
-    );
-  transform: perspective(600px) rotateX(58deg);
-  transform-origin: bottom;
+    linear-gradient(180deg, rgba(201, 216, 220, 0.1), rgba(16, 26, 32, 0.14) 32%, rgba(9, 15, 19, 0.44)),
+    repeating-linear-gradient(180deg, transparent 0 26px, rgba(201, 216, 220, 0.035) 26px 27px);
+  border-top: 1px solid rgba(201, 216, 220, 0.14);
 }
 
 /* ── 家具:每件都是純 CSS 的具體小物 ─────────────────────
@@ -191,12 +192,13 @@
 .furniture::before {
   content: "";
   position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: -5%;
-  height: 14%;
+  left: 8%;
+  right: 8%;
+  bottom: -3%;
+  height: 10%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.38), transparent 66%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.42), transparent 66%);
+  opacity: calc(0.45 + var(--depth, 0.5) * 0.55);
 }
 
 .furniture span {
@@ -269,7 +271,7 @@
 
 /* 矮櫃:櫃體 + 兩層抽屜線與圓把手 */
 .furniture-cabinet {
-  width: 13%;
+  width: 17%;
   aspect-ratio: 1.25 / 1;
 }
 
@@ -290,7 +292,7 @@
 
 /* 花盆:上寬下窄的盆身 + 兩片相對傾斜的葉子 */
 .furniture-pot {
-  width: 7.5%;
+  width: 10%;
   aspect-ratio: 0.85 / 1;
 }
 
@@ -325,7 +327,7 @@
 
 /* 瓶子:玻璃瓶身 + 瓶中液體 + 軟木塞 */
 .furniture-bottle {
-  width: 5%;
+  width: 6.5%;
   aspect-ratio: 0.55 / 1;
 }
 
@@ -370,7 +372,7 @@
 
 /* 小燈:燈罩 + 燈桿與底座 + 發光的燈泡 */
 .furniture-lamp {
-  width: 6.5%;
+  width: 9.5%;
   aspect-ratio: 0.62 / 1;
 }
 
@@ -411,8 +413,8 @@
 
 /* 窗簾:簾桿 + 直向皺褶布面 + 綁帶 */
 .furniture-curtain {
-  width: 14%;
-  height: 24%;
+  width: 18%;
+  height: 27%;
 }
 
 .furniture-curtain::before {
@@ -451,7 +453,7 @@
 
 /* 睡墊:床墊 + 枕頭 + 蓋到一半的毯子 */
 .furniture-bed {
-  width: 17%;
+  width: 24%;
   aspect-ratio: 2 / 1;
 }
 
@@ -482,7 +484,7 @@
 
 /* 石頭:立體岩塊 + 頂部苔蘚 + 旁邊的小碎石 */
 .furniture-stone {
-  width: 9%;
+  width: 12%;
   aspect-ratio: 1.3 / 1;
 }
 
