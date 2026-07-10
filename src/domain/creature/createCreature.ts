@@ -67,6 +67,7 @@ export function createCreature(now = new Date().toISOString()): Creature {
     foodMemory: {},
     responsePreference: createDefaultResponsePreference(),
     unlockedTraits: [],
+    recentDialogueIds: [],
     activeTemporaryEffects: [],
     inventory: [],
     favoriteSpots: ["窗邊霧光", "地墊邊緣"],

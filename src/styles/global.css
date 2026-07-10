@@ -7,9 +7,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(120deg, rgba(201, 216, 220, 0.42), transparent 34%),
-    linear-gradient(180deg, var(--mist), #eef3ef 58%, #dfe9e8);
-  color: var(--ink);
+    linear-gradient(120deg, rgba(145, 183, 196, 0.08), transparent 34%),
+    linear-gradient(180deg, #121d23, var(--ink) 58%, #0a1114);
+  color: var(--text);
 }
 
 button,
@@ -22,8 +22,8 @@ select {
 button {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--ink);
+  background: var(--panel-raised);
+  color: var(--text);
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -33,7 +33,7 @@ button {
 
 button:hover,
 button:focus-visible {
-  border-color: rgba(52, 74, 82, 0.48);
+  border-color: rgba(201, 216, 220, 0.48);
   transform: translateY(-1px);
   outline: none;
 }
@@ -73,7 +73,7 @@ legend {
 
 .kicker {
   margin: 0 0 4px;
-  color: rgba(52, 74, 82, 0.72);
+  color: var(--text-dim);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0;
@@ -100,7 +100,7 @@ h2 {
 .tabbar,
 .touch-button {
   border: 1px solid var(--line);
-  background: rgba(251, 250, 245, 0.72);
+  background: var(--panel);
   backdrop-filter: blur(18px);
 }
 
@@ -124,7 +124,7 @@ h2 {
 
 .creature-status span,
 .panel-heading span {
-  color: rgba(52, 74, 82, 0.68);
+  color: var(--text-dim);
   font-size: 0.86rem;
 }
 
@@ -145,8 +145,8 @@ h2 {
 }
 
 .tabbar button.active {
-  background: var(--ink);
-  color: var(--mist);
+  background: var(--mist);
+  color: var(--ink-soft);
 }
 
 .tool-panel {
@@ -183,13 +183,13 @@ h2 {
 }
 
 .option-grid button span {
-  color: rgba(52, 74, 82, 0.68);
+  color: var(--text-dim);
   font-size: 0.84rem;
 }
 
 .option-grid button.selected {
-  background: #e0eceb;
-  border-color: rgba(52, 74, 82, 0.58);
+  background: rgba(145, 183, 196, 0.22);
+  border-color: rgba(201, 216, 220, 0.55);
 }
 
 .note-field,
@@ -204,8 +204,8 @@ select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--ink);
+  background: var(--panel-raised);
+  color: var(--text);
 }
 
 textarea {
@@ -233,8 +233,8 @@ select {
 }
 
 .primary-action {
-  background: var(--ink);
-  color: var(--mist);
+  background: var(--mist);
+  color: var(--ink-soft);
 }
 
 .touch-button {
@@ -246,13 +246,13 @@ select {
 .storage-warning {
   border-left: 4px solid var(--glass-blue);
   padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.46);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .latest-response span {
   font-size: 0.84rem;
   font-weight: 800;
-  color: rgba(52, 74, 82, 0.7);
+  color: var(--text-dim);
 }
 
 .latest-response p,
@@ -271,7 +271,7 @@ select {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 12px;
-  background: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .journal-entry summary {
@@ -300,12 +300,12 @@ select {
 }
 
 .feeding-detail span {
-  color: rgba(52, 74, 82, 0.65);
+  color: var(--text-dim);
   font-size: 0.84rem;
 }
 
 .feeding-detail em {
-  color: rgba(52, 74, 82, 0.8);
+  color: rgba(228, 235, 232, 0.82);
 }
 
 .trait-grid {
@@ -335,8 +335,10 @@ meter {
 }
 
 .high-contrast {
-  --line: rgba(52, 74, 82, 0.46);
-  --paper: #ffffff;
+  --text: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.82);
+  --line: rgba(255, 255, 255, 0.5);
+  --panel: rgba(10, 17, 21, 0.9);
 }
 
 .font-large {

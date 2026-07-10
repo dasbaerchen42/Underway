@@ -94,6 +94,29 @@ export type ResponsePreference = {
   ritual: number;
 };
 
+export type DialogueIntent =
+  | "first_food"
+  | "familiar_food"
+  | "meaning_shift"
+  | "silence"
+  | "intense"
+  | "calm_daily"
+  | "preserve"
+  | "release"
+  | "closeness"
+  | "solitude"
+  | "long_absence"
+  | "appearance_change"
+  | "confused_accept"
+  | "repeat_feeding";
+
+export type DialogueEntry = {
+  id: string;
+  intent: DialogueIntent;
+  line: string;
+  weight?: number;
+};
+
 export type TemporaryEffect = {
   id: string;
   label: string;
@@ -120,6 +143,7 @@ export type Creature = {
   foodMemory: Record<string, FoodMeaningMemory>;
   responsePreference: ResponsePreference;
   unlockedTraits: AppearanceTraitKey[];
+  recentDialogueIds: string[];
   activeTemporaryEffects: TemporaryEffect[];
   inventory: CreatureOwnedItem[];
   favoriteSpots: string[];

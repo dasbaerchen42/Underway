@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useGame } from "../../state/gameStore";
-import type { GameState } from "../../types";
+import { migrateState } from "../../storage/migration";
 
 export function SettingsPanel() {
   const { state, dispatch, exportJson } = useGame();
@@ -85,7 +85,10 @@ export function SettingsPanel() {
             return;
           }
           const text = await file.text();
-          dispatch({ type: "import", state: JSON.parse(text) as GameState });
+          const migrated = migrateState(JSON.parse(text));
+          if (migrated) {
+            dispatch({ type: "import", state: migrated });
+          }
         }}
       />
       <p className="storage-warning">清除瀏覽器資料可能遺失存檔；匯出 JSON 可保留完整狀態。</p>

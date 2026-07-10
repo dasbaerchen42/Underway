@@ -12,6 +12,7 @@ export function CreatureView({ creature }: { creature: Creature }) {
     "--wetness": appearance.wetness,
     "--dark-core": appearance.darkCore,
     "--fluid-motion": appearance.fluidMotion,
+    "--tendrils": appearance.tendrils,
   } as CSSProperties;
 
   return (
@@ -22,9 +23,9 @@ export function CreatureView({ creature }: { creature: Creature }) {
         <div className="creature-eye eye-right" />
         {appearance.tendrils >= 18 && (
           <>
-            <span className="tendril tendril-one" />
-            <span className="tendril tendril-two" />
-            <span className="tendril tendril-three" />
+            <span className="tendril tendril-one" aria-hidden="true" />
+            <span className="tendril tendril-two" aria-hidden="true" />
+            <span className="tendril tendril-three" aria-hidden="true" />
           </>
         )}
         {appearance.membrane >= 18 && <span className="membrane" />}

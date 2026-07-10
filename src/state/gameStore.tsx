@@ -71,11 +71,18 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (state.initialized) {
         return state;
       }
-      const events = processOfflineTime(state.lastVisitAt, action.now, state.creatures[0].id);
+      const offline = processOfflineTime(
+        state.lastVisitAt,
+        action.now,
+        state.creatures[0],
+        state.habitat.items,
+        state.feedings,
+      );
       const next = {
         ...state,
         initialized: true,
-        worldEvents: [...events, ...state.worldEvents],
+        worldEvents: [...offline.events, ...state.worldEvents],
+        habitat: { items: offline.items },
         lastVisitAt: action.now,
       };
       return {

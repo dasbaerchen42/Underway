@@ -31,6 +31,11 @@ export function HabitatStage({
         </div>
       ))}
       <CreatureView creature={creature} />
+      <div className="glass-layer" aria-hidden="true">
+        <span className="glass-sheen" />
+        <span className="glass-drops" />
+        <span className="glass-fog" />
+      </div>
     </div>
   );
 }

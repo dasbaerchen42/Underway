@@ -1,14 +1,21 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+
+  /* 夜霧調色盤:霧白只留給文字與微光,底色沉入深墨藍。 */
   --mist: #f3f4ef;
   --pale-blue: #c9d8dc;
   --glass-blue: #91b7c4;
   --warm-rice: #e9dfcc;
   --moss: #aebeaa;
-  --ink: #344a52;
-  --paper: #fbfaf5;
-  --line: rgba(52, 74, 82, 0.18);
-  --shadow: 0 24px 70px rgba(52, 74, 82, 0.18);
+  --ink: #0f181d;
+  --ink-soft: #16232a;
+
+  --text: #e4ebe8;
+  --text-dim: rgba(228, 235, 232, 0.62);
+  --panel: rgba(20, 32, 39, 0.72);
+  --panel-raised: rgba(255, 255, 255, 0.05);
+  --line: rgba(201, 216, 220, 0.16);
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
   --radius: 8px;
   font-family:
     "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;

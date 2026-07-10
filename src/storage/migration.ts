@@ -1,6 +1,6 @@
-import type { GameState } from "../types";
+import type { Creature, GameState } from "../types";
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
 export function migrateState(value: unknown): GameState | null {
   if (!value || typeof value !== "object") {
@@ -12,6 +12,11 @@ export function migrateState(value: unknown): GameState | null {
   }
   return {
     ...candidate,
+    // v1 -> v2:養成物新增最近台詞紀錄(對話冷卻用)。
+    creatures: candidate.creatures.map((creature: Creature) => ({
+      ...creature,
+      recentDialogueIds: creature.recentDialogueIds ?? [],
+    })),
     schemaVersion: CURRENT_SCHEMA_VERSION,
   } as GameState;
 }

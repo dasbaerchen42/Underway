@@ -3,30 +3,131 @@
   min-height: clamp(420px, 68vh, 760px);
   margin-top: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(201, 216, 220, 0.2);
   border-radius: var(--radius);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(145, 183, 196, 0.16)),
-    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.74), transparent 32%);
+    linear-gradient(180deg, rgba(145, 183, 196, 0.12), rgba(13, 21, 26, 0.66)),
+    radial-gradient(circle at 50% 26%, rgba(201, 216, 220, 0.14), transparent 36%),
+    linear-gradient(180deg, #17242b, #0d1519);
   box-shadow: var(--shadow);
+}
+
+.habitat-stage[data-phase="日照"] {
+  background:
+    linear-gradient(180deg, rgba(201, 216, 220, 0.14), rgba(15, 24, 29, 0.62)),
+    radial-gradient(circle at 52% 22%, rgba(233, 223, 204, 0.16), transparent 38%),
+    linear-gradient(180deg, #1a2830, #0e161b);
 }
 
 .habitat-stage[data-phase="暮色"] {
   background:
-    linear-gradient(180deg, rgba(233, 223, 204, 0.62), rgba(145, 183, 196, 0.2)),
-    radial-gradient(circle at 65% 20%, rgba(255, 245, 212, 0.66), transparent 34%);
+    linear-gradient(180deg, rgba(233, 223, 204, 0.12), rgba(13, 20, 25, 0.7)),
+    radial-gradient(circle at 65% 20%, rgba(233, 197, 160, 0.16), transparent 36%),
+    linear-gradient(180deg, #1c2226, #0c1216);
 }
 
 .habitat-stage[data-phase="夜霧"] {
   background:
-    linear-gradient(180deg, rgba(52, 74, 82, 0.18), rgba(145, 183, 196, 0.22)),
-    radial-gradient(circle at 44% 20%, rgba(243, 244, 239, 0.62), transparent 32%);
+    linear-gradient(180deg, rgba(52, 74, 82, 0.3), rgba(8, 13, 17, 0.78)),
+    radial-gradient(circle at 44% 18%, rgba(145, 183, 196, 0.12), transparent 34%),
+    linear-gradient(180deg, #10181d, #080e12);
+}
+
+/* 玻璃層:蓋在整個舞台最上方,讓箱庭像隔著一片溫室玻璃被觀察。 */
+.glass-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.glass-layer > span {
+  position: absolute;
+  inset: 0;
+}
+
+/* 斜向反光帶 + 左上角光斑:玻璃面最主要的存在感來源。 */
+.glass-sheen {
+  background:
+    radial-gradient(ellipse 46% 32% at 10% 4%, rgba(228, 240, 244, 0.17), transparent 70%),
+    radial-gradient(ellipse 30% 22% at 96% 88%, rgba(201, 216, 220, 0.08), transparent 72%),
+    linear-gradient(
+      115deg,
+      transparent 15%,
+      rgba(228, 240, 244, 0.06) 23%,
+      rgba(228, 240, 244, 0.15) 29%,
+      rgba(228, 240, 244, 0.04) 35%,
+      transparent 40%,
+      transparent 52%,
+      rgba(228, 240, 244, 0.05) 58%,
+      rgba(228, 240, 244, 0.1) 64%,
+      transparent 71%
+    );
+}
+
+/* 凝結水珠:小顆亮點聚在下緣與角落,兩道細長的滑落水痕。 */
+.glass-drops {
+  background-image:
+    linear-gradient(180deg, rgba(228, 240, 244, 0.11), rgba(228, 240, 244, 0.02)),
+    linear-gradient(180deg, rgba(228, 240, 244, 0.09), rgba(228, 240, 244, 0.02)),
+    radial-gradient(circle at 50% 12%, rgba(228, 240, 244, 0.26) 0 1.9px, transparent 3.4px),
+    radial-gradient(circle at 50% 9%, rgba(228, 240, 244, 0.22) 0 1.5px, transparent 2.9px),
+    radial-gradient(circle at 9% 78%, rgba(228, 240, 244, 0.21) 0 1.9px, transparent 3.4px),
+    radial-gradient(circle at 14% 87%, rgba(228, 240, 244, 0.13) 0 1.2px, transparent 2.4px),
+    radial-gradient(circle at 6% 62%, rgba(228, 240, 244, 0.11) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 82%, rgba(228, 240, 244, 0.2) 0 1.8px, transparent 3.2px),
+    radial-gradient(circle at 94% 68%, rgba(228, 240, 244, 0.11) 0 1.1px, transparent 2.2px),
+    radial-gradient(circle at 81% 92%, rgba(228, 240, 244, 0.13) 0 1.3px, transparent 2.5px),
+    radial-gradient(circle at 27% 94%, rgba(228, 240, 244, 0.1) 0 1.1px, transparent 2.2px),
+    radial-gradient(circle at 66% 96%, rgba(228, 240, 244, 0.11) 0 1.2px, transparent 2.3px),
+    radial-gradient(circle at 42% 90%, rgba(228, 240, 244, 0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 97% 30%, rgba(228, 240, 244, 0.09) 0 1px, transparent 2px),
+    radial-gradient(circle at 3% 26%, rgba(228, 240, 244, 0.08) 0 1px, transparent 2px);
+  background-repeat: no-repeat;
+  background-size:
+    2px 11%,
+    1.5px 8%,
+    auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto;
+  background-position:
+    23% 6%,
+    77% 55%,
+    0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+}
+
+/* 邊緣霧氣:玻璃四周起霧、中間被擦亮的感覺。 */
+.glass-fog {
+  background: radial-gradient(
+    ellipse 62% 52% at 50% 46%,
+    transparent 58%,
+    rgba(201, 216, 220, 0.045) 80%,
+    rgba(228, 235, 232, 0.09) 100%
+  );
+  box-shadow:
+    inset 0 0 48px rgba(180, 205, 214, 0.08),
+    inset 0 1px 0 rgba(228, 240, 244, 0.12);
+}
+
+/* 夜霧時玻璃反光收斂、霧氣更重;日照時反光最亮。 */
+.habitat-stage[data-phase="夜霧"] .glass-sheen {
+  opacity: 0.6;
+}
+
+.habitat-stage[data-phase="夜霧"] .glass-fog {
+  box-shadow:
+    inset 0 0 64px rgba(180, 205, 214, 0.12),
+    inset 0 1px 0 rgba(228, 240, 244, 0.1);
+}
+
+.habitat-stage[data-phase="日照"] .glass-sheen {
+  filter: brightness(1.5);
 }
 
 .greenhouse-frame {
   position: absolute;
   inset: 7% 8% 18%;
-  border: 1px solid rgba(52, 74, 82, 0.2);
+  border: 1px solid rgba(201, 216, 220, 0.2);
   border-bottom: 0;
   clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
 }
@@ -35,7 +136,7 @@
 .greenhouse-frame::after {
   content: "";
   position: absolute;
-  background: rgba(52, 74, 82, 0.14);
+  background: rgba(201, 216, 220, 0.13);
 }
 
 .greenhouse-frame::before {
@@ -60,11 +161,11 @@
   height: 34%;
   border-radius: 50% 50% 14% 14%;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(174, 190, 170, 0.28)),
+    linear-gradient(180deg, rgba(201, 216, 220, 0.1), rgba(174, 190, 170, 0.07)),
     repeating-linear-gradient(
       90deg,
-      rgba(52, 74, 82, 0.08),
-      rgba(52, 74, 82, 0.08) 1px,
+      rgba(201, 216, 220, 0.07),
+      rgba(201, 216, 220, 0.07) 1px,
       transparent 1px,
       transparent 54px
     );
@@ -72,7 +173,14 @@
   transform-origin: bottom;
 }
 
+/* ── 家具:每件都是純 CSS 的具體小物 ─────────────────────
+   結構慣例:span = 主體,span::before / span::after = 兩個零件,
+   .furniture::before = 共用落地陰影,.furniture-*::after = 第三個零件。
+   色調從 --item-tint 用 color-mix 衍生亮部與暗部,之後染色仍可用。 */
 .furniture {
+  --tint-light: color-mix(in srgb, var(--item-tint) 72%, #f3f4ef);
+  --tint-dark: color-mix(in srgb, var(--item-tint) 62%, #0b1216);
+  --tint-deep: color-mix(in srgb, var(--item-tint) 38%, #0b1216);
   position: absolute;
   width: 8%;
   aspect-ratio: 1;
@@ -80,63 +188,362 @@
   z-index: 2;
 }
 
-.furniture span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--item-tint);
-  border: 1px solid rgba(52, 74, 82, 0.2);
-  box-shadow: 0 10px 18px rgba(52, 74, 82, 0.12);
+.furniture::before {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -5%;
+  height: 14%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.38), transparent 66%);
 }
 
+.furniture span {
+  position: absolute;
+  inset: 0;
+}
+
+.furniture span::before,
+.furniture span::after,
+.furniture-pot::after,
+.furniture-bottle::after,
+.furniture-lamp::after {
+  content: "";
+  position: absolute;
+}
+
+/* 地墊:編織紋圓墊 + 內圈縫線 */
 .furniture-mat {
   width: 22%;
+  aspect-ratio: 2.6 / 1;
 }
 
-.furniture-mat span,
-.furniture-bed span {
+.furniture-mat::before {
+  display: none;
+}
+
+.furniture-mat span {
   border-radius: 50%;
+  background:
+    repeating-linear-gradient(
+      48deg,
+      transparent 0 5px,
+      rgba(11, 18, 22, 0.12) 5px 6px
+    ),
+    linear-gradient(180deg, var(--tint-light), var(--item-tint));
+  border: 1px solid var(--tint-dark);
+  opacity: 0.92;
 }
 
-.furniture-table span {
-  border-radius: 50% 50% 8px 8px;
+.furniture-mat span::before {
+  inset: 12% 6%;
+  border-radius: 50%;
+  border: 1px dashed rgba(11, 18, 22, 0.28);
 }
 
+/* 小桌:膠囊桌面 + 兩隻微開的桌腳 */
+.furniture-table {
+  width: 13%;
+  aspect-ratio: 1.35 / 1;
+}
+
+.furniture-table span::before {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--tint-light), var(--item-tint) 72%, var(--tint-dark));
+}
+
+.furniture-table span::after {
+  top: 26%;
+  bottom: 0;
+  left: 16%;
+  right: 16%;
+  background:
+    linear-gradient(var(--tint-deep), var(--tint-deep)) left top / 10% 100% no-repeat,
+    linear-gradient(var(--tint-deep), var(--tint-deep)) right top / 10% 100% no-repeat;
+}
+
+/* 矮櫃:櫃體 + 兩層抽屜線與圓把手 */
 .furniture-cabinet {
-  width: 12%;
+  width: 13%;
+  aspect-ratio: 1.25 / 1;
 }
 
 .furniture-cabinet span {
-  border-radius: 6px;
+  border-radius: 7%;
+  background: linear-gradient(180deg, var(--tint-light) 0 9%, var(--item-tint) 9%);
+  border: 1px solid var(--tint-deep);
 }
 
-.furniture-pot span {
-  clip-path: polygon(18% 28%, 82% 28%, 70% 100%, 30% 100%);
+.furniture-cabinet span::before {
+  inset: 18% 10% 12%;
+  background:
+    linear-gradient(var(--tint-deep), var(--tint-deep)) 0 34% / 100% 1px no-repeat,
+    linear-gradient(var(--tint-deep), var(--tint-deep)) 0 72% / 100% 1px no-repeat,
+    radial-gradient(circle, var(--tint-deep) 46%, transparent 54%) 50% 12% / 10% 12% no-repeat,
+    radial-gradient(circle, var(--tint-deep) 46%, transparent 54%) 50% 52% / 10% 12% no-repeat;
 }
 
-.furniture-bottle span {
-  border-radius: 45% 45% 30% 30%;
+/* 花盆:上寬下窄的盆身 + 兩片相對傾斜的葉子 */
+.furniture-pot {
+  width: 7.5%;
+  aspect-ratio: 0.85 / 1;
+}
+
+.furniture-pot span::after {
+  left: 20%;
+  right: 20%;
+  top: 48%;
+  bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 82% 100%, 18% 100%);
+  background: linear-gradient(180deg, var(--tint-light) 0 16%, var(--item-tint) 16%);
+}
+
+.furniture-pot span::before {
+  left: 16%;
+  top: 5%;
+  width: 34%;
+  height: 44%;
+  border-radius: 90% 0 90% 0;
+  background: linear-gradient(135deg, #aebeaa, #77897a);
+  rotate: -26deg;
+}
+
+.furniture-pot::after {
+  right: 16%;
+  top: 10%;
+  width: 30%;
+  height: 38%;
+  border-radius: 0 90% 0 90%;
+  background: linear-gradient(45deg, #9fb29c, #6c7f70);
+  rotate: 24deg;
+}
+
+/* 瓶子:玻璃瓶身 + 瓶中液體 + 軟木塞 */
+.furniture-bottle {
+  width: 5%;
+  aspect-ratio: 0.55 / 1;
+}
+
+.furniture-bottle span::after {
+  inset: 0;
+  clip-path: polygon(
+    38% 0,
+    62% 0,
+    62% 16%,
+    80% 30%,
+    86% 46%,
+    86% 92%,
+    74% 100%,
+    26% 100%,
+    14% 92%,
+    14% 46%,
+    20% 30%,
+    38% 16%
+  );
+  background:
+    linear-gradient(105deg, transparent 22%, rgba(243, 244, 239, 0.4) 27%, transparent 34%),
+    linear-gradient(180deg, rgba(201, 216, 220, 0.44), rgba(145, 183, 196, 0.3));
+}
+
+.furniture-bottle span::before {
+  left: 18%;
+  right: 18%;
+  bottom: 3%;
+  height: 36%;
+  border-radius: 0 0 45% 45%;
+  background: color-mix(in srgb, var(--item-tint) 78%, transparent);
+}
+
+.furniture-bottle::after {
+  top: -5%;
+  left: 39%;
+  width: 22%;
+  height: 11%;
+  border-radius: 28%;
+  background: linear-gradient(180deg, #c3ab8a, #9b8464);
+}
+
+/* 小燈:燈罩 + 燈桿與底座 + 發光的燈泡 */
+.furniture-lamp {
+  width: 6.5%;
+  aspect-ratio: 0.62 / 1;
 }
 
 .furniture-lamp span {
-  border-radius: 50%;
-  box-shadow: 0 0 24px rgba(233, 223, 204, 0.9);
+  inset: 0 8% auto;
+  height: 42%;
+  border-radius: 50% 50% 12% 12%;
+  background: linear-gradient(180deg, var(--tint-light), var(--item-tint));
 }
 
+.furniture-lamp span::before {
+  left: 50%;
+  top: 90%;
+  width: 7%;
+  height: 130%;
+  translate: -50% 0;
+  background: var(--tint-deep);
+}
+
+.furniture-lamp span::after {
+  left: 14%;
+  right: 14%;
+  top: 212%;
+  height: 16%;
+  border-radius: 50%;
+  background: var(--tint-deep);
+}
+
+.furniture-lamp::after {
+  top: 36%;
+  left: 43%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 241, 214, 0.95);
+  box-shadow: 0 0 22px 7px rgba(233, 223, 204, 0.5);
+}
+
+/* 窗簾:簾桿 + 直向皺褶布面 + 綁帶 */
 .furniture-curtain {
   width: 14%;
-  height: 22%;
+  height: 24%;
+}
+
+.furniture-curtain::before {
+  display: none;
 }
 
 .furniture-curtain span {
-  border-radius: 0 0 50% 50%;
+  inset: 5% 8% 0;
+  border-radius: 6% 6% 42% 42% / 2% 2% 16% 16%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--item-tint) 0 14%,
+    color-mix(in srgb, var(--item-tint) 74%, #344a52) 14% 24%
+  );
+  opacity: 0.9;
+}
+
+.furniture-curtain span::before {
+  top: -6%;
+  left: -8%;
+  right: -8%;
+  height: 5%;
+  border-radius: 999px;
+  background: var(--tint-deep);
+}
+
+.furniture-curtain span::after {
+  top: 56%;
+  left: 10%;
+  right: 10%;
+  height: 7%;
+  border-radius: 999px;
+  background: var(--tint-deep);
+  opacity: 0.75;
+}
+
+/* 睡墊:床墊 + 枕頭 + 蓋到一半的毯子 */
+.furniture-bed {
+  width: 17%;
+  aspect-ratio: 2 / 1;
+}
+
+.furniture-bed span {
+  inset: 22% 0 6%;
+  border-radius: 24% / 44%;
+  background: linear-gradient(180deg, var(--tint-light), var(--item-tint) 72%);
+  border: 1px solid var(--tint-dark);
+}
+
+.furniture-bed span::before {
+  top: -12%;
+  left: 5%;
+  width: 30%;
+  height: 46%;
+  border-radius: 46%;
+  background: color-mix(in srgb, var(--item-tint) 26%, #f3f4ef);
+}
+
+.furniture-bed span::after {
+  left: 42%;
+  right: -1%;
+  top: 12%;
+  bottom: -2%;
+  border-radius: 24% 26% 28% 18%;
+  background: color-mix(in srgb, var(--item-tint) 64%, #344a52);
+}
+
+/* 石頭:立體岩塊 + 頂部苔蘚 + 旁邊的小碎石 */
+.furniture-stone {
+  width: 9%;
+  aspect-ratio: 1.3 / 1;
 }
 
 .furniture-stone span {
-  border-radius: 46% 54% 50% 44%;
+  inset: 10% 6% 0;
+  border-radius: 52% 48% 46% 54% / 62% 58% 40% 44%;
+  background: radial-gradient(
+    circle at 32% 24%,
+    color-mix(in srgb, var(--item-tint) 52%, #c9d8dc),
+    var(--item-tint) 55%,
+    color-mix(in srgb, var(--item-tint) 60%, #06090b)
+  );
+}
+
+.furniture-stone span::before {
+  top: -4%;
+  left: 16%;
+  width: 46%;
+  height: 32%;
+  border-radius: 65% 70% 55% 62%;
+  background: rgba(174, 190, 170, 0.72);
+}
+
+.furniture-stone span::after {
+  right: -12%;
+  bottom: -2%;
+  width: 24%;
+  height: 26%;
+  border-radius: 50% 55% 45% 50%;
+  background: var(--tint-dark);
+}
+
+/* 紙片:折角便箋 + 幾行字跡 */
+.furniture-tag {
+  width: 5.5%;
+  aspect-ratio: 0.85 / 1;
 }
 
 .furniture-tag span {
-  border-radius: 2px;
-  transform: rotate(-8deg);
+  background: color-mix(in srgb, var(--item-tint) 55%, #f3f4ef);
+  clip-path: polygon(0 0, 72% 0, 100% 20%, 100% 100%, 0 100%);
+  rotate: -8deg;
+}
+
+.furniture-tag span::before {
+  top: 0;
+  right: 0;
+  width: 28%;
+  height: 20%;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  background: rgba(11, 18, 22, 0.2);
+}
+
+.furniture-tag span::after {
+  left: 14%;
+  right: 20%;
+  top: 34%;
+  height: 46%;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(52, 74, 82, 0.42) 0 1px,
+    transparent 1px 7px
+  );
 }

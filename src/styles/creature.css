@@ -26,10 +26,10 @@
   filter:
     hue-rotate(calc(var(--blue) * 0.72deg - var(--amber) * 0.26deg))
     saturate(calc(0.86 + var(--blue) * 0.004))
-    drop-shadow(0 0 calc(7px + var(--glow) * 0.18px) rgba(255, 255, 255, 0.72));
+    drop-shadow(0 0 calc(9px + var(--glow) * 0.22px) rgba(201, 216, 220, 0.5));
   box-shadow:
     inset 0 0 34px rgba(255, 255, 255, 0.42),
-    inset 0 -22px 30px rgba(52, 74, 82, 0.1);
+    inset 0 -22px 30px rgba(52, 74, 82, 0.16);
   animation: breathe 5.8s ease-in-out infinite;
 }
 
@@ -72,31 +72,46 @@
   display: block;
 }
 
+/* 水母式觸手:單一元素的連續波浪絲帶。
+   形狀由 clip-path 錐形正弦帶構成,三個 keyframe 相位輪轉,波形沿整條往末端傳遞;
+   錨點貼著鐘形體的外緣:側邊兩根掛在左右下緣的弧線上、往外張,中間一根垂在底緣。 */
 .tendril {
-  bottom: -18px;
-  width: 14px;
-  height: 58px;
-  border-radius: 999px;
-  background: rgba(145, 183, 196, 0.52);
-  transform-origin: top;
-  animation: tendril 5.5s ease-in-out infinite;
+  --phase: 0s;
+  width: 34px;
+  height: calc(52px + var(--tendrils, 20) * 0.85px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(186, 214, 224, 0.72),
+      rgba(145, 183, 196, 0.52) 45%,
+      rgba(145, 183, 196, 0.14)
+    );
+  transform-origin: top center;
+  filter: blur(0.4px) drop-shadow(0 0 5px rgba(145, 183, 196, 0.2));
+  animation: tendril-wave 7s linear infinite;
+  animation-delay: var(--phase);
 }
 
 .tendril-one {
-  left: 25%;
-  rotate: 18deg;
+  left: -1%;
+  top: 50%;
+  rotate: 26deg;
 }
 
 .tendril-two {
-  left: 48%;
-  height: 68px;
-  animation-delay: -1.8s;
+  --phase: -2.4s;
+  left: 44%;
+  top: 76%;
+  height: calc(64px + var(--tendrils, 20) * 1px);
+  animation-duration: 7.9s;
 }
 
 .tendril-three {
-  right: 22%;
-  rotate: -16deg;
-  animation-delay: -3s;
+  --phase: -4.7s;
+  right: -1%;
+  top: 50%;
+  rotate: -26deg;
+  animation-duration: 6.3s;
 }
 
 .membrane {
@@ -226,13 +241,19 @@
   }
 }
 
-@keyframes tendril {
-  0%,
-  100% {
-    transform: skewX(-5deg);
+/* 由 scripts 產生的錐形正弦絲帶:22 點多邊形,三相位輪轉形成行進波。 */
+@keyframes tendril-wave {
+  0% {
+    clip-path: polygon(32% 0%, 33.9% 10%, 37% 20%, 39.6% 30%, 39% 40%, 34.6% 50%, 28.9% 60%, 27.1% 70%, 33.9% 80%, 49% 90%, 66.6% 100%, 75.5% 100%, 60.7% 90%, 48.2% 80%, 44.2% 70%, 48.6% 60%, 57.1% 50%, 64.2% 40%, 67.5% 30%, 67.6% 20%, 67.2% 10%, 68% 0%);
   }
-  50% {
-    transform: skewX(8deg) translateY(4px);
+  33.3% {
+    clip-path: polygon(32% 0%, 32.5% 10%, 33.3% 20%, 36.4% 30%, 42.1% 40%, 47.9% 50%, 49.6% 60%, 44.2% 70%, 33.2% 80%, 23% 90%, 21.8% 100%, 30.7% 100%, 34.6% 90%, 47.5% 80%, 61.2% 70%, 69.4% 60%, 70.4% 50%, 67.3% 40%, 64.3% 30%, 63.9% 20%, 65.8% 10%, 68% 0%);
+  }
+  66.6% {
+    clip-path: polygon(32% 0%, 33.6% 10%, 33.8% 20%, 32.2% 30%, 31.1% 40%, 33.8% 50%, 41.9% 60%, 53.1% 70%, 61.4% 80%, 60.5% 90%, 48.2% 100%, 57.2% 100%, 72.2% 90%, 75.8% 80%, 70.2% 70%, 61.6% 60%, 56.2% 50%, 56.3% 40%, 60.1% 30%, 64.4% 20%, 66.9% 10%, 68% 0%);
+  }
+  100% {
+    clip-path: polygon(32% 0%, 33.9% 10%, 37% 20%, 39.6% 30%, 39% 40%, 34.6% 50%, 28.9% 60%, 27.1% 70%, 33.9% 80%, 49% 90%, 66.6% 100%, 75.5% 100%, 60.7% 90%, 48.2% 80%, 44.2% 70%, 48.6% 60%, 57.1% 50%, 64.2% 40%, 67.5% 30%, 67.6% 20%, 67.2% 10%, 68% 0%);
   }
 }
 
