@@ -16,6 +16,12 @@ npm run build
 npm test
 ```
 
+## 部署
+
+推送到 `main` 會自動觸發 GitHub Actions(`.github/workflows/deploy.yml`):跑測試、建置,並把 `dist/` 發佈到 GitHub Pages。線上網址:<https://dasbaerchen42.github.io/Underway/>。
+
+Repo 的 Pages 來源需設定為「GitHub Actions」(Settings → Pages → Build and deployment → Source)。
+
 ## 目前功能
 
 - 一隻養成物與一個「霧潮溫室」箱庭場景,整體為暗色夜霧主題。
