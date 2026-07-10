@@ -1,6 +1,6 @@
 import { calculateDiminishingReturn } from "./diminishingReturns";
 import { calculateFeedingSignal } from "./calculateFeedingSignal";
-import { selectDialogue } from "../dialogue/selectDialogue";
+import { DIALOGUE_COOLDOWN, selectDialogue } from "../dialogue/selectDialogue";
 import { translateToAppearance } from "../creature/translateToAppearance";
 import { unlockTraits } from "../creature/unlockTraits";
 import { updateFoodMeaningMemory } from "../creature/updateFoodMemory";
@@ -43,12 +43,28 @@ export function completeFeeding(
     ],
   };
   updatedCreature.unlockedTraits = unlockTraits(updatedCreature);
-  const dialogue = selectDialogue(updatedCreature, input, rng);
+  const newTraits = updatedCreature.unlockedTraits.filter(
+    (trait) => !creature.unlockedTraits.includes(trait),
+  );
+  const hoursSinceLastInteraction = creature.lastInteractionAt
+    ? (new Date(input.timestamp).getTime() - new Date(creature.lastInteractionAt).getTime()) /
+      (1000 * 60 * 60)
+    : null;
+  // 用餵食前的記憶判定意圖(first_food / meaning_shift 需比對舊狀態)。
+  const dialogue = selectDialogue(
+    creature,
+    { input, signal, repeatWeight, newTraits, hoursSinceLastInteraction },
+    rng,
+  );
+  updatedCreature.recentDialogueIds = [
+    dialogue.entryId,
+    ...(creature.recentDialogueIds ?? []),
+  ].slice(0, DIALOGUE_COOLDOWN + 2);
   const record: FeedingRecord = {
     ...input,
     id,
     digestion,
-    dialogue,
+    dialogue: dialogue.line,
     repeatWeight,
   };
 

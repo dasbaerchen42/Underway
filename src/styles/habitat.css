@@ -3,30 +3,40 @@
   min-height: clamp(420px, 68vh, 760px);
   margin-top: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(201, 216, 220, 0.2);
   border-radius: var(--radius);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(145, 183, 196, 0.16)),
-    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.74), transparent 32%);
+    linear-gradient(180deg, rgba(145, 183, 196, 0.12), rgba(13, 21, 26, 0.66)),
+    radial-gradient(circle at 50% 26%, rgba(201, 216, 220, 0.14), transparent 36%),
+    linear-gradient(180deg, #17242b, #0d1519);
   box-shadow: var(--shadow);
+}
+
+.habitat-stage[data-phase="日照"] {
+  background:
+    linear-gradient(180deg, rgba(201, 216, 220, 0.14), rgba(15, 24, 29, 0.62)),
+    radial-gradient(circle at 52% 22%, rgba(233, 223, 204, 0.16), transparent 38%),
+    linear-gradient(180deg, #1a2830, #0e161b);
 }
 
 .habitat-stage[data-phase="暮色"] {
   background:
-    linear-gradient(180deg, rgba(233, 223, 204, 0.62), rgba(145, 183, 196, 0.2)),
-    radial-gradient(circle at 65% 20%, rgba(255, 245, 212, 0.66), transparent 34%);
+    linear-gradient(180deg, rgba(233, 223, 204, 0.12), rgba(13, 20, 25, 0.7)),
+    radial-gradient(circle at 65% 20%, rgba(233, 197, 160, 0.16), transparent 36%),
+    linear-gradient(180deg, #1c2226, #0c1216);
 }
 
 .habitat-stage[data-phase="夜霧"] {
   background:
-    linear-gradient(180deg, rgba(52, 74, 82, 0.18), rgba(145, 183, 196, 0.22)),
-    radial-gradient(circle at 44% 20%, rgba(243, 244, 239, 0.62), transparent 32%);
+    linear-gradient(180deg, rgba(52, 74, 82, 0.3), rgba(8, 13, 17, 0.78)),
+    radial-gradient(circle at 44% 18%, rgba(145, 183, 196, 0.12), transparent 34%),
+    linear-gradient(180deg, #10181d, #080e12);
 }
 
 .greenhouse-frame {
   position: absolute;
   inset: 7% 8% 18%;
-  border: 1px solid rgba(52, 74, 82, 0.2);
+  border: 1px solid rgba(201, 216, 220, 0.2);
   border-bottom: 0;
   clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
 }
@@ -35,7 +45,7 @@
 .greenhouse-frame::after {
   content: "";
   position: absolute;
-  background: rgba(52, 74, 82, 0.14);
+  background: rgba(201, 216, 220, 0.13);
 }
 
 .greenhouse-frame::before {
@@ -60,11 +70,11 @@
   height: 34%;
   border-radius: 50% 50% 14% 14%;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(174, 190, 170, 0.28)),
+    linear-gradient(180deg, rgba(201, 216, 220, 0.1), rgba(174, 190, 170, 0.07)),
     repeating-linear-gradient(
       90deg,
-      rgba(52, 74, 82, 0.08),
-      rgba(52, 74, 82, 0.08) 1px,
+      rgba(201, 216, 220, 0.07),
+      rgba(201, 216, 220, 0.07) 1px,
       transparent 1px,
       transparent 54px
     );
@@ -85,8 +95,9 @@
   width: 100%;
   height: 100%;
   background: var(--item-tint);
-  border: 1px solid rgba(52, 74, 82, 0.2);
-  box-shadow: 0 10px 18px rgba(52, 74, 82, 0.12);
+  border: 1px solid rgba(201, 216, 220, 0.22);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.32);
+  opacity: 0.82;
 }
 
 .furniture-mat {
@@ -120,7 +131,8 @@
 
 .furniture-lamp span {
   border-radius: 50%;
-  box-shadow: 0 0 24px rgba(233, 223, 204, 0.9);
+  box-shadow: 0 0 26px rgba(233, 223, 204, 0.75);
+  opacity: 0.95;
 }
 
 .furniture-curtain {

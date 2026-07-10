@@ -5,8 +5,19 @@ import { JournalPage } from "../components/journal/JournalPage";
 import { SettingsPanel } from "../components/settings/SettingsPanel";
 import { GameProvider, useGame } from "../state/gameStore";
 import { calculateWorldPhase } from "../domain/time/calculateWorldPhase";
+import type { AppearanceTraitKey } from "../types";
 
 type View = "feed" | "journal" | "atlas" | "settings";
+
+const traitLabels: Record<AppearanceTraitKey, string> = {
+  tendrils: "觸手",
+  membrane: "薄膜",
+  crystals: "結晶",
+  flora: "花芽",
+  horns: "小角",
+  floatingMotes: "漂浮光點",
+  darkCore: "深色核心",
+};
 
 function AppShell() {
   const { state, dispatch } = useGame();
@@ -14,7 +25,7 @@ function AppShell() {
   const creature = state.creatures[0];
   const phase = useMemo(() => calculateWorldPhase(), [state.lastVisitAt]);
   const visibleTraits = creature.unlockedTraits.length
-    ? creature.unlockedTraits.join("、")
+    ? creature.unlockedTraits.map((trait) => traitLabels[trait]).join("、")
     : "尚未命名的細微傾向";
 
   return (
