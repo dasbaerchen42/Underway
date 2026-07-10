@@ -15,48 +15,61 @@ export function HabitatStage({
   creature,
   items,
   phase,
+  showFurniture,
+  onToggleFurniture,
 }: {
   creature: Creature;
   items: HabitatItem[];
   phase: string;
+  showFurniture: boolean;
+  onToggleFurniture: () => void;
 }) {
   return (
     <div className="habitat-stage" data-phase={phase}>
       <div className="back-wall" />
       <div className="greenhouse-frame" />
       <div className="floor-plane" />
-      {items.map((item) => {
-        const isWall = WALL_KINDS.has(item.kind);
-        const depth = floorDepth(item.y);
-        const style = {
-          left: `${item.x}%`,
-          top: `${item.y}%`,
-          rotate: `${item.rotation}deg`,
-          zIndex: isWall ? 1 : Math.round(item.y),
-          transform: isWall
-            ? "translate(-50%, -50%)"
-            : `translate(-50%, -100%) scale(${(0.72 + depth * 0.5).toFixed(3)})`,
-          transformOrigin: "50% 100%",
-          "--item-tint": item.tint,
-          "--depth": depth,
-        } as CSSProperties;
-        return (
-          <div
-            className={`furniture furniture-${item.kind}`}
-            key={item.id}
-            style={style}
-            title={item.name}
-          >
-            <span />
-          </div>
-        );
-      })}
+      {showFurniture &&
+        items.map((item) => {
+          const isWall = WALL_KINDS.has(item.kind);
+          const depth = floorDepth(item.y);
+          const style = {
+            left: `${item.x}%`,
+            top: `${item.y}%`,
+            rotate: `${item.rotation}deg`,
+            zIndex: isWall ? 1 : Math.round(item.y),
+            transform: isWall
+              ? "translate(-50%, -50%)"
+              : `translate(-50%, -100%) scale(${(0.72 + depth * 0.5).toFixed(3)})`,
+            transformOrigin: "50% 100%",
+            "--item-tint": item.tint,
+            "--depth": depth,
+          } as CSSProperties;
+          return (
+            <div
+              className={`furniture furniture-${item.kind}`}
+              key={item.id}
+              style={style}
+              title={item.name}
+            >
+              <span />
+            </div>
+          );
+        })}
       <CreatureView creature={creature} />
       <div className="glass-layer" aria-hidden="true">
         <span className="glass-sheen" />
         <span className="glass-drops" />
         <span className="glass-fog" />
       </div>
+      <button
+        className="furniture-toggle"
+        onClick={onToggleFurniture}
+        type="button"
+        aria-pressed={!showFurniture}
+      >
+        {showFurniture ? "隱藏家具" : "顯示家具"}
+      </button>
     </div>
   );
 }

@@ -124,6 +124,25 @@
   filter: brightness(1.5);
 }
 
+/* 隱藏家具開關:貼在玻璃右下角的小圓鈕。 */
+.furniture-toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 7;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  opacity: 0.72;
+}
+
+.furniture-toggle:hover,
+.furniture-toggle:focus-visible {
+  opacity: 1;
+}
+
 /* 後牆:讓「房間」存在,牆與地板交界在 56% 高度。 */
 .back-wall {
   position: absolute;
