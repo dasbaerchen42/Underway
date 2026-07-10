@@ -20,18 +20,19 @@ const traitLabels: Record<AppearanceTraitKey, string> = {
 };
 
 function AppShell() {
-  const { state, dispatch } = useGame();
+  const { state, dispatch, currentTime } = useGame();
   const [view, setView] = useState<View>("feed");
   const creature = state.creatures[0];
-  const phase = useMemo(() => calculateWorldPhase(), [state.lastVisitAt]);
+  const settings = state.playerSettings;
+  const phase = useMemo(() => calculateWorldPhase(new Date(currentTime)), [currentTime]);
   const visibleTraits = creature.unlockedTraits.length
     ? creature.unlockedTraits.map((trait) => traitLabels[trait]).join("、")
     : "尚未命名的細微傾向";
 
   return (
     <main
-      className={`app-shell ${state.playerSettings.highContrast ? "high-contrast" : ""} font-${state.playerSettings.fontScale}`}
-      data-motion={state.playerSettings.animation}
+      className={`app-shell theme-${settings.theme} ${settings.highContrast ? "high-contrast" : ""} font-${settings.fontScale}`}
+      data-motion={settings.animation}
     >
       <section className="stage-column" aria-label="箱庭舞台">
         <header className="topbar">
@@ -39,8 +40,32 @@ function AppShell() {
             <p className="kicker">共鳴箱庭</p>
             <h1>霧潮溫室</h1>
           </div>
-          <div className="phase-pill" aria-label="當前光巡">
-            第 {phase.cycleNumber} 次光巡 · {phase.phase}
+          <div className="topbar-side">
+            <div className="theme-toggle" aria-label="主題切換">
+              <button
+                aria-pressed={settings.theme === "night"}
+                className={settings.theme === "night" ? "active" : ""}
+                onClick={() =>
+                  dispatch({ type: "setSettings", settings: { ...settings, theme: "night" } })
+                }
+                type="button"
+              >
+                夜霧
+              </button>
+              <button
+                aria-pressed={settings.theme === "neon"}
+                className={settings.theme === "neon" ? "active" : ""}
+                onClick={() =>
+                  dispatch({ type: "setSettings", settings: { ...settings, theme: "neon" } })
+                }
+                type="button"
+              >
+                霓虹
+              </button>
+            </div>
+            <div className="phase-pill" aria-label="當前光巡">
+              第 {phase.cycleNumber} 次光巡 · {phase.phase}
+            </div>
           </div>
         </header>
         <HabitatStage creature={creature} items={state.habitat.items} phase={phase.phase} />

@@ -1,8 +1,12 @@
 import type { CSSProperties } from "react";
+import { deriveVisualProfile } from "../../domain/creature/deriveVisualProfile";
 import type { Creature } from "../../types";
+
+const tendrilSlots = ["one", "two", "three"] as const;
 
 export function CreatureView({ creature }: { creature: Creature }) {
   const appearance = creature.appearance;
+  const profile = deriveVisualProfile(creature);
   const style = {
     "--blue": appearance.hueBlue,
     "--amber": appearance.hueAmber,
@@ -14,20 +18,25 @@ export function CreatureView({ creature }: { creature: Creature }) {
     "--fluid-motion": appearance.fluidMotion,
     "--tendrils": appearance.tendrils,
   } as CSSProperties;
+  const reaction = creature.activeTemporaryEffects[0];
+  const reactionType = reaction?.id.startsWith("touch-") ? "touch" : reaction ? "feeding" : "idle";
 
   return (
-    <div className="creature-wrap" aria-label={`${creature.name} 的外觀`}>
-      <div className="creature" style={style}>
+    <div
+      className={`creature-wrap reaction-${reactionType}`}
+      aria-label={`${creature.name} 的外觀`}
+    >
+      <div className="creature" key={reaction?.id ?? "idle"} style={style}>
         <div className="creature-core" />
-        <div className="creature-eye eye-left" />
-        <div className="creature-eye eye-right" />
-        {appearance.tendrils >= 18 && (
-          <>
-            <span className="tendril tendril-one" aria-hidden="true" />
-            <span className="tendril tendril-two" aria-hidden="true" />
-            <span className="tendril tendril-three" aria-hidden="true" />
-          </>
-        )}
+        <div className="face-rig" aria-hidden="true">
+          <span className="creature-brow brow-left" />
+          <span className="creature-brow brow-right" />
+          <span className="creature-eye eye-left" />
+          <span className="creature-eye eye-right" />
+        </div>
+        {tendrilSlots.slice(0, profile.tendrilCount).map((slot) => (
+          <span className={`tendril tendril-${slot}`} key={slot} aria-hidden="true" />
+        ))}
         {appearance.membrane >= 18 && <span className="membrane" />}
         {appearance.crystals >= 22 && (
           <>
@@ -48,12 +57,11 @@ export function CreatureView({ creature }: { creature: Creature }) {
           </>
         )}
       </div>
-      {appearance.floatingMotes >= 18 && (
+      {profile.moteCount > 0 && (
         <div className="motes" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
+          {Array.from({ length: profile.moteCount }, (_, index) => (
+            <span key={index} />
+          ))}
         </div>
       )}
     </div>

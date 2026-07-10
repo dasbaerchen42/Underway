@@ -1,11 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGame } from "../../state/gameStore";
-import { migrateState } from "../../storage/migration";
 
 export function SettingsPanel() {
-  const { state, dispatch, exportJson } = useGame();
+  const { state, dispatch, exportJson, importJson, resetGame, storageError } = useGame();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
   const settings = state.playerSettings;
+  const creature = state.creatures[0];
 
   return (
     <section className="tool-panel settings-panel">
@@ -14,8 +15,25 @@ export function SettingsPanel() {
           <p className="kicker">資料與顯示</p>
           <h2>設定</h2>
         </div>
-        <span>自動儲存中</span>
+        <span>{storageError ?? "自動儲存中"}</span>
       </div>
+
+      <label className="select-row">
+        牠的名字
+        <input
+          className="name-input"
+          defaultValue={creature.name}
+          maxLength={16}
+          onBlur={(event) =>
+            dispatch({
+              type: "renameCreature",
+              creatureId: creature.id,
+              name: event.target.value,
+            })
+          }
+          type="text"
+        />
+      </label>
 
       <label className="select-row">
         動畫強度
@@ -70,7 +88,7 @@ export function SettingsPanel() {
         <button type="button" onClick={() => fileRef.current?.click()}>
           匯入 JSON
         </button>
-        <button type="button" onClick={() => dispatch({ type: "clear", now: new Date().toISOString() })}>
+        <button type="button" onClick={resetGame}>
           清除存檔
         </button>
       </div>
@@ -85,13 +103,13 @@ export function SettingsPanel() {
             return;
           }
           const text = await file.text();
-          const migrated = migrateState(JSON.parse(text));
-          if (migrated) {
-            dispatch({ type: "import", state: migrated });
-          }
+          const result = importJson(text);
+          setImportMessage(result.ok ? "已匯入存檔。" : result.message);
+          event.target.value = "";
         }}
       />
-      <p className="storage-warning">清除瀏覽器資料可能遺失存檔；匯出 JSON 可保留完整狀態。</p>
+      {importMessage && <p className="storage-warning">{importMessage}</p>}
+      <p className="storage-warning">清除瀏覽器資料可能遺失存檔;匯出 JSON 可保留完整狀態。</p>
     </section>
   );
 }

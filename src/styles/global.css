@@ -6,9 +6,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    linear-gradient(120deg, rgba(145, 183, 196, 0.08), transparent 34%),
-    linear-gradient(180deg, #121d23, var(--ink) 58%, #0a1114);
+  background: var(--ink);
   color: var(--text);
 }
 
@@ -55,6 +53,41 @@ legend {
   grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
   gap: 18px;
   padding: 18px;
+  background:
+    linear-gradient(120deg, var(--page-glow), transparent 34%),
+    linear-gradient(180deg, var(--page-top), var(--ink) 58%, var(--page-bottom));
+  color: var(--text);
+  transition: background 400ms ease;
+}
+
+.topbar-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle {
+  display: flex;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px;
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+}
+
+.theme-toggle button {
+  min-height: 34px;
+  padding: 0 14px;
+  border-color: transparent;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 800;
+}
+
+.theme-toggle button.active {
+  background: var(--mist);
+  color: var(--ink-soft);
 }
 
 .stage-column,
@@ -188,8 +221,8 @@ h2 {
 }
 
 .option-grid button.selected {
-  background: rgba(145, 183, 196, 0.22);
-  border-color: rgba(201, 216, 220, 0.55);
+  background: var(--select-bg);
+  border-color: var(--select-border);
 }
 
 .note-field,
@@ -200,12 +233,18 @@ h2 {
 }
 
 textarea,
-select {
+select,
+.name-input {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-raised);
   color: var(--text);
+}
+
+.name-input {
+  min-height: 42px;
+  padding: 0 10px;
 }
 
 textarea {
