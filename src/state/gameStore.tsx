@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { starterHabitatItems } from "../data/habitatItems";
+import { foods } from "../data/foods";
 import { createCreature } from "../domain/creature/createCreature";
 import { getActiveTemporaryEffects } from "../domain/creature/temporaryEffects";
 import { completeFeeding } from "../domain/feeding/completeFeeding";
@@ -57,6 +58,7 @@ function createInitialState(now = new Date().toISOString()): GameState {
     journalEntries: [buildJournalEntry(dateKey(now), [], [])],
     habitat: { items: starterHabitatItems },
     worldEvents: [],
+    lastReaction: null,
     lastVisitAt: now,
     lastSettlementDate: dateKey(now),
     initialized: false,
@@ -124,12 +126,19 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         return state;
       }
       const result = completeFeeding(creature, action.input, state.feedings);
+      const foodName = foods.find((food) => food.id === action.input.foodId)?.name ?? "食物";
       const next = {
         ...state,
         creatures: state.creatures.map((item) =>
           item.id === creature.id ? result.creature : item,
         ),
         feedings: [result.record, ...state.feedings],
+        lastReaction: {
+          kind: "feeding" as const,
+          label: `${foodName}的回聲`,
+          text: result.record.dialogue,
+          occurredAt: action.input.timestamp,
+        },
         lastVisitAt: action.input.timestamp,
         lastSettlementDate: dateKey(action.input.timestamp),
       };
@@ -160,6 +169,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
               }
             : item,
         ),
+        lastReaction: {
+          kind: "touch",
+          label: "觸碰",
+          text: "牠把觸碰留在身體邊緣。",
+          occurredAt: action.now,
+        },
         lastVisitAt: action.now,
       };
     }

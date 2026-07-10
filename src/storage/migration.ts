@@ -1,4 +1,5 @@
 import { starterHabitatItems } from "../data/habitatItems";
+import { foods } from "../data/foods";
 import { createCreature } from "../domain/creature/createCreature";
 import { buildJournalEntry, dateKey } from "../domain/journal/buildJournalEntry";
 import { baseAppearance, zeroSignal } from "../domain/vectors";
@@ -9,10 +10,11 @@ import type {
   FeedingRecord,
   GameState,
   HabitatItem,
+  ReactionState,
   WorldEvent,
 } from "../types";
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
 const traitKeys: AppearanceTraitKey[] = [
   "tendrils",
@@ -237,6 +239,36 @@ function normalizeHabitatItem(value: unknown, index: number): HabitatItem | null
   };
 }
 
+function normalizeReaction(value: unknown, feedings: FeedingRecord[]): ReactionState | null {
+  if (
+    isRecord(value) &&
+    (value.kind === "feeding" || value.kind === "touch") &&
+    isString(value.label) &&
+    isString(value.text) &&
+    isIsoDate(value.occurredAt)
+  ) {
+    return {
+      kind: value.kind,
+      label: value.label,
+      text: value.text,
+      occurredAt: value.occurredAt,
+    };
+  }
+  const latest = [...feedings].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  )[0];
+  if (!latest) {
+    return null;
+  }
+  const foodName = foods.find((food) => food.id === latest.foodId)?.name ?? "食物";
+  return {
+    kind: "feeding",
+    label: `${foodName}的回聲`,
+    text: latest.dialogue,
+    occurredAt: latest.timestamp,
+  };
+}
+
 export function migrateState(value: unknown): GameState | null {
   if (!isRecord(value)) {
     return null;
@@ -290,6 +322,7 @@ export function migrateState(value: unknown): GameState | null {
       .map((date) => buildJournalEntry(date, feedings, worldEvents)),
     habitat: { items: habitatItems.length > 0 ? habitatItems : starterHabitatItems },
     worldEvents,
+    lastReaction: normalizeReaction(value.lastReaction, feedings),
     lastVisitAt: now,
     lastSettlementDate: isString(value.lastSettlementDate)
       ? value.lastSettlementDate

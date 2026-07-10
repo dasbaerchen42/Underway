@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { careIntents } from "../../data/careIntents";
 import { foods } from "../../data/foods";
 import { meanings } from "../../data/meanings";
@@ -12,8 +12,6 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
   const [careIntentId, setCareIntentId] = useState(careIntents[0].id);
   const [note, setNote] = useState("");
   const [showNoteInJournal, setShowNoteInJournal] = useState(true);
-  const latest = state.feedings[0];
-  const selectedFood = useMemo(() => foods.find((food) => food.id === foodId), [foodId]);
   const creatureName = creature.name === "未命名的牠" ? "小玻" : creature.name;
 
   return (
@@ -113,10 +111,6 @@ export function FeedingFlow({ creature }: { creature: Creature }) {
         餵給{creatureName}
       </button>
 
-      <div className="latest-response" aria-live="polite">
-        <span>{selectedFood?.name ?? "食物"}的回聲</span>
-        <p>{latest?.dialogue ?? "牠在等第一份餵食，也在等你不必說清楚的那一部分。"}</p>
-      </div>
     </section>
   );
 }

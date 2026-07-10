@@ -1,17 +1,23 @@
 import type { CSSProperties } from "react";
+import { deriveVisualProfile } from "../../domain/creature/deriveVisualProfile";
 import type { Creature } from "../../types";
+
+const tendrilSlots = ["outer-left", "outer-right", "inner-left", "inner-right", "side-left"];
 
 export function CreatureView({ creature }: { creature: Creature }) {
   const appearance = creature.appearance;
+  const profile = deriveVisualProfile(creature);
   const style = {
-    "--blue": appearance.hueBlue,
-    "--amber": appearance.hueAmber,
-    "--transparency": appearance.transparency,
-    "--glow": appearance.glow,
-    "--softness": appearance.softness,
-    "--wetness": appearance.wetness,
-    "--dark-core": appearance.darkCore,
-    "--fluid-motion": appearance.fluidMotion,
+    "--appearance-glow": appearance.glow,
+    "--appearance-dark-core": appearance.darkCore,
+    "--creature-body": profile.bodyColor,
+    "--creature-opacity": profile.bodyOpacity,
+    "--jelly-wide": 1 + appearance.softness * 0.00055,
+    "--jelly-narrow": 1 - appearance.softness * 0.00035,
+    "--jelly-speed": `${6.2 - appearance.fluidMotion * 0.028}s`,
+    "--shape-speed": `${9 - appearance.softness * 0.03}s`,
+    "--tendril-speed": `${8 - appearance.fluidMotion * 0.04}s`,
+    "--wet-shine": 0.18 + appearance.wetness * 0.0046,
   } as CSSProperties;
   const name = creature.name === "未命名的牠" ? "小玻" : creature.name;
   const reaction = creature.activeTemporaryEffects[0];
@@ -22,6 +28,18 @@ export function CreatureView({ creature }: { creature: Creature }) {
       className={`creature-wrap reaction-${reactionType}`}
       aria-label={`${name} 的觀測樣貌`}
     >
+      <div className="aura-effects" aria-hidden="true">
+        <div className="bubble-aura">
+          {Array.from({ length: profile.bubbleCount }, (_, index) => (
+            <span className="aura-bubble" key={`bubble-${index}`} />
+          ))}
+        </div>
+        <div className="star-aura">
+          {Array.from({ length: profile.starCount }, (_, index) => (
+            <span className="aura-star" key={`star-${index}`} />
+          ))}
+        </div>
+      </div>
       <div className="creature" key={reaction?.id ?? "idle"} style={style}>
         <div className="creature-core">
           <span />
@@ -32,13 +50,19 @@ export function CreatureView({ creature }: { creature: Creature }) {
           <span className="creature-eye eye-left" />
           <span className="creature-eye eye-right" />
         </div>
-        {appearance.tendrils >= 18 && (
-          <>
-            <span className="tendril tendril-one" />
-            <span className="tendril tendril-two" />
-            <span className="tendril tendril-three" />
-          </>
-        )}
+        <div className="jelly-tendrils" aria-hidden="true">
+          {tendrilSlots.map((slot, index) => (
+            <span
+              className={`jelly-tendril tendril-${slot} ${index < profile.tendrilCount ? "is-visible" : ""}`}
+              key={slot}
+              style={{ "--tendril-delay": `${index * -0.62}s` } as CSSProperties}
+            >
+              <span className="tendril-segment segment-root" />
+              <span className="tendril-segment segment-middle" />
+              <span className="tendril-segment segment-tip" />
+            </span>
+          ))}
+        </div>
         {appearance.membrane >= 18 && <span className="membrane" />}
         {appearance.crystals >= 22 && (
           <>
@@ -59,14 +83,6 @@ export function CreatureView({ creature }: { creature: Creature }) {
           </>
         )}
       </div>
-      {appearance.floatingMotes >= 18 && (
-        <div className="motes" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-      )}
     </div>
   );
 }

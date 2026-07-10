@@ -100,6 +100,13 @@ export type TemporaryEffect = {
   until: string;
 };
 
+export type ReactionState = {
+  kind: "feeding" | "touch";
+  label: string;
+  text: string;
+  occurredAt: string;
+};
+
 export type CreatureOwnedItem = {
   id: string;
   name: string;
@@ -210,6 +217,7 @@ export type GameState = {
   journalEntries: JournalEntry[];
   habitat: { items: HabitatItem[] };
   worldEvents: WorldEvent[];
+  lastReaction: ReactionState | null;
   lastVisitAt: string;
   lastSettlementDate: string;
   initialized: boolean;

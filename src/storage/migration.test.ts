@@ -35,4 +35,31 @@ describe("migrateState", () => {
     expect(state?.worldEvents).toEqual([]);
     expect(state?.journalEntries).toHaveLength(1);
   });
+
+  it("derives the latest feeding echo for saves created before reactions existed", () => {
+    const state = migrateState({
+      creatures: [{}],
+      feedings: [
+        {
+          id: "feeding-1",
+          creatureId: "creature-1",
+          foodId: "strawberry",
+          meaningId: "light",
+          careIntentId: "together",
+          note: "",
+          showNoteInJournal: true,
+          timestamp: "2026-07-10T00:00:00.000Z",
+          digestion: {},
+          dialogue: "牠把這份味道收好了。",
+          repeatWeight: 1,
+        },
+      ],
+    });
+
+    expect(state?.lastReaction).toMatchObject({
+      kind: "feeding",
+      label: "草莓的回聲",
+      text: "牠把這份味道收好了。",
+    });
+  });
 });

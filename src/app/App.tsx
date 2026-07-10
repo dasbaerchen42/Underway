@@ -14,10 +14,8 @@ function AppShell() {
   const [draftName, setDraftName] = useState("");
   const creature = state.creatures[0];
   const phase = useMemo(() => calculateWorldPhase(new Date(currentTime)), [currentTime]);
-  const visibleTraits = creature.unlockedTraits.length
-    ? creature.unlockedTraits.join("、")
-    : "尚未命名的細微傾向";
   const creatureName = creature.name === "未命名的牠" ? "小玻" : creature.name;
+  const reaction = state.lastReaction;
 
   return (
     <main
@@ -95,14 +93,11 @@ function AppShell() {
         </section>
 
         <div className="creature-status" aria-live="polite">
-          <div>
+          <div className="reaction-heading">
             <span>最近反應</span>
-            <strong>{creature.activeTemporaryEffects[0]?.label ?? `${creatureName} 正在水裡慢慢漂浮。`}</strong>
+            {reaction && <small>{reaction.label}</small>}
           </div>
-          <div>
-            <span>觀測狀態</span>
-            <strong>{visibleTraits}</strong>
-          </div>
+          <strong>{reaction?.text ?? `${creatureName} 正在水裡慢慢漂浮。`}</strong>
         </div>
 
         <nav className="tabbar" aria-label="主要分頁">
