@@ -1,18 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Creature } from "../../types";
 
-function Tendril({ position }: { position: "one" | "two" | "three" }) {
-  return (
-    <span className={`tendril tendril-${position}`} aria-hidden="true">
-      <span className="tendril-seg">
-        <span className="tendril-seg">
-          <span className="tendril-seg tendril-tip" />
-        </span>
-      </span>
-    </span>
-  );
-}
-
 export function CreatureView({ creature }: { creature: Creature }) {
   const appearance = creature.appearance;
   const style = {
@@ -35,9 +23,9 @@ export function CreatureView({ creature }: { creature: Creature }) {
         <div className="creature-eye eye-right" />
         {appearance.tendrils >= 18 && (
           <>
-            <Tendril position="one" />
-            <Tendril position="two" />
-            <Tendril position="three" />
+            <span className="tendril tendril-one" aria-hidden="true" />
+            <span className="tendril tendril-two" aria-hidden="true" />
+            <span className="tendril tendril-three" aria-hidden="true" />
           </>
         )}
         {appearance.membrane >= 18 && <span className="membrane" />}
