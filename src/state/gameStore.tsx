@@ -6,30 +6,38 @@ import {
   useMemo,
   useReducer,
   useRef,
+  useState,
   type ReactNode,
 } from "react";
 import { starterHabitatItems } from "../data/habitatItems";
 import { createCreature } from "../domain/creature/createCreature";
+import { getActiveTemporaryEffects } from "../domain/creature/temporaryEffects";
 import { completeFeeding } from "../domain/feeding/completeFeeding";
 import { buildJournalEntry, dateKey } from "../domain/journal/buildJournalEntry";
 import { processOfflineTime } from "../domain/time/processOfflineTime";
-import { CURRENT_SCHEMA_VERSION } from "../storage/migration";
+import { CURRENT_SCHEMA_VERSION, migrateState } from "../storage/migration";
 import { localStorageAdapter } from "../storage/localStorageAdapter";
 import type { FeedingInput, GameState, JournalEntry, PlayerSettings } from "../types";
 
 type GameAction =
   | { type: "initialize"; now: string }
+  | { type: "tick"; now: string }
   | { type: "feed"; input: FeedingInput }
   | { type: "touch"; now: string }
+  | { type: "renameCreature"; creatureId: string; name: string }
   | { type: "setSettings"; settings: PlayerSettings }
   | { type: "import"; state: GameState }
-  | { type: "clear"; now: string };
+  | { type: "reset"; now: string };
 
 type GameContextValue = {
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
   exportJson: () => string;
   exportMarkdown: () => string;
+  importJson: (text: string) => { ok: true } | { ok: false; message: string };
+  resetGame: () => void;
+  storageError: string | null;
+  currentTime: string;
 };
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -41,6 +49,7 @@ function createInitialState(now = new Date().toISOString()): GameState {
     playerSettings: {
       animation: "full",
       fontScale: "normal",
+      theme: "night",
       highContrast: false,
     },
     creatures: [creature],
@@ -54,11 +63,11 @@ function createInitialState(now = new Date().toISOString()): GameState {
   };
 }
 
-function rebuildJournalEntries(state: GameState): JournalEntry[] {
+function rebuildJournalEntries(state: GameState, nowIso: string): JournalEntry[] {
   const dates = new Set([
     ...state.feedings.map((feeding) => dateKey(feeding.timestamp)),
     ...state.worldEvents.map((event) => dateKey(event.occurredAt)),
-    dateKey(new Date().toISOString()),
+    dateKey(nowIso),
   ]);
   return [...dates]
     .sort((a, b) => b.localeCompare(a))
@@ -81,14 +90,40 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const next = {
         ...state,
         initialized: true,
+        creatures: state.creatures.map((creature) => ({
+          ...creature,
+          activeTemporaryEffects: getActiveTemporaryEffects(
+            creature.activeTemporaryEffects,
+            action.now,
+          ),
+        })),
         worldEvents: [...offline.events, ...state.worldEvents],
         habitat: { items: offline.items },
         lastVisitAt: action.now,
+        lastSettlementDate: dateKey(action.now),
       };
       return {
         ...next,
-        journalEntries: rebuildJournalEntries(next),
+        journalEntries: rebuildJournalEntries(next, action.now),
       };
+    }
+    case "tick": {
+      const settlementDate = dateKey(action.now);
+      const creatures = state.creatures.map((creature) => {
+        const effects = getActiveTemporaryEffects(creature.activeTemporaryEffects, action.now);
+        return effects.length === creature.activeTemporaryEffects.length
+          ? creature
+          : { ...creature, activeTemporaryEffects: effects };
+      });
+      const next = {
+        ...state,
+        creatures,
+        lastSettlementDate: settlementDate,
+        lastVisitAt: action.now,
+      };
+      return settlementDate === state.lastSettlementDate
+        ? next
+        : { ...next, journalEntries: rebuildJournalEntries(next, action.now) };
     }
     case "feed": {
       const creature = state.creatures.find((item) => item.id === action.input.creatureId);
@@ -107,35 +142,51 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
       return {
         ...next,
-        journalEntries: rebuildJournalEntries(next),
+        journalEntries: rebuildJournalEntries(next, action.input.timestamp),
       };
     }
     case "touch": {
       const creature = state.creatures[0];
       return {
         ...state,
-        creatures: [
-          {
-            ...creature,
-            lastInteractionAt: action.now,
-            activeTemporaryEffects: [
-              {
-                id: `touch-${action.now}`,
-                label: "牠把觸碰留在身體邊緣",
-                until: new Date(new Date(action.now).getTime() + 1000 * 60 * 10).toISOString(),
-              },
-            ],
-          },
-        ],
+        creatures: state.creatures.map((item) =>
+          item.id === creature.id
+            ? {
+                ...item,
+                lastInteractionAt: action.now,
+                activeTemporaryEffects: [
+                  {
+                    id: `touch-${action.now}`,
+                    label: "牠把觸碰留在身體邊緣",
+                    until: new Date(
+                      new Date(action.now).getTime() + 1000 * 60 * 10,
+                    ).toISOString(),
+                  },
+                  ...getActiveTemporaryEffects(item.activeTemporaryEffects, action.now),
+                ].slice(0, 3),
+              }
+            : item,
+        ),
         lastVisitAt: action.now,
+      };
+    }
+    case "renameCreature": {
+      const nextName = action.name.trim().slice(0, 16);
+      if (!nextName) {
+        return state;
+      }
+      return {
+        ...state,
+        creatures: state.creatures.map((creature) =>
+          creature.id === action.creatureId ? { ...creature, name: nextName } : creature,
+        ),
       };
     }
     case "setSettings":
       return { ...state, playerSettings: action.settings };
     case "import":
       return { ...action.state, initialized: true };
-    case "clear":
-      localStorageAdapter.clear();
+    case "reset":
       return { ...createInitialState(action.now), initialized: true };
     default:
       return state;
@@ -149,9 +200,28 @@ export function GameProvider({ children }: { children: ReactNode }) {
     () => localStorageAdapter.load() ?? createInitialState(),
   );
   const didMount = useRef(false);
+  const [storageError, setStorageError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(() => new Date().toISOString());
 
   useEffect(() => {
-    dispatch({ type: "initialize", now: new Date().toISOString() });
+    const now = new Date().toISOString();
+    setCurrentTime(now);
+    dispatch({ type: "initialize", now });
+  }, []);
+
+  // 30 秒對時:光巡階段前進、暫時效果過期、跨午夜換日記。
+  useEffect(() => {
+    const syncClock = () => {
+      const now = new Date().toISOString();
+      setCurrentTime(now);
+      dispatch({ type: "tick", now });
+    };
+    const handle = window.setInterval(syncClock, 30_000);
+    document.addEventListener("visibilitychange", syncClock);
+    return () => {
+      window.clearInterval(handle);
+      document.removeEventListener("visibilitychange", syncClock);
+    };
   }, []);
 
   useEffect(() => {
@@ -160,8 +230,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
       return;
     }
     const handle = window.setTimeout(() => {
-      localStorageAdapter.backup(state);
-      localStorageAdapter.save(state);
+      const saveResult = localStorageAdapter.save(state);
+      if (!saveResult.ok) {
+        setStorageError(saveResult.message);
+        return;
+      }
+      const backupResult = localStorageAdapter.backup(state);
+      setStorageError(backupResult.ok ? null : backupResult.message);
     }, 250);
     return () => window.clearTimeout(handle);
   }, [state]);
@@ -171,10 +246,35 @@ export function GameProvider({ children }: { children: ReactNode }) {
     () => state.journalEntries.map((entry) => entry.markdown).join("\n\n---\n\n"),
     [state.journalEntries],
   );
+  const importJson = useCallback((text: string) => {
+    try {
+      const migrated = migrateState(JSON.parse(text) as unknown);
+      if (!migrated) {
+        return { ok: false, message: "這份檔案不是可辨識的共鳴箱庭存檔。" } as const;
+      }
+      dispatch({ type: "import", state: migrated });
+      return { ok: true } as const;
+    } catch {
+      return { ok: false, message: "檔案內容不是有效的 JSON。" } as const;
+    }
+  }, []);
+  const resetGame = useCallback(() => {
+    localStorageAdapter.clear();
+    dispatch({ type: "reset", now: new Date().toISOString() });
+  }, []);
 
   const value = useMemo(
-    () => ({ state, dispatch, exportJson, exportMarkdown }),
-    [state, exportJson, exportMarkdown],
+    () => ({
+      state,
+      dispatch,
+      exportJson,
+      exportMarkdown,
+      importJson,
+      resetGame,
+      storageError,
+      currentTime,
+    }),
+    [state, exportJson, exportMarkdown, importJson, resetGame, storageError, currentTime],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

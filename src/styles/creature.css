@@ -46,6 +46,11 @@
   animation: pulse 6s ease-in-out infinite;
 }
 
+.face-rig {
+  position: absolute;
+  inset: 0;
+}
+
 .creature-eye {
   position: absolute;
   top: 36%;
@@ -53,6 +58,8 @@
   height: 8px;
   border-radius: 50%;
   background: rgba(52, 74, 82, 0.62);
+  animation: blink 7s ease-in-out infinite;
+  transform-origin: center;
 }
 
 .eye-left {
@@ -61,6 +68,52 @@
 
 .eye-right {
   right: 38%;
+  animation-delay: 0.06s;
+}
+
+.creature-brow {
+  position: absolute;
+  top: 30%;
+  width: 10px;
+  height: 2.5px;
+  border-radius: 999px;
+  background: rgba(52, 74, 82, 0.4);
+  opacity: 0;
+  transition:
+    opacity 300ms ease,
+    translate 300ms ease,
+    rotate 300ms ease;
+}
+
+.brow-left {
+  left: 37%;
+  rotate: -8deg;
+}
+
+.brow-right {
+  right: 37%;
+  rotate: 8deg;
+}
+
+/* 進食反應:瞇成弧線的滿足眼 + 核心加速脈動 */
+.reaction-feeding .creature-eye {
+  height: 4px;
+  border-radius: 0 0 999px 999px;
+  animation: none;
+}
+
+.reaction-feeding .creature-core {
+  animation-duration: 2.4s;
+}
+
+/* 觸碰反應:挑眉 + 眼睛微睜 */
+.reaction-touch .creature-brow {
+  opacity: 1;
+  translate: 0 -3px;
+}
+
+.reaction-touch .creature-eye {
+  scale: 1.2;
 }
 
 .tendril,
@@ -211,6 +264,18 @@
   animation-delay: -6s;
 }
 
+.motes span:nth-child(5) {
+  left: 4%;
+  top: 52%;
+  animation-delay: -3s;
+}
+
+.motes span:nth-child(6) {
+  right: 3%;
+  top: 46%;
+  animation-delay: -7.4s;
+}
+
 @keyframes breathe {
   0%,
   100% {
@@ -266,5 +331,16 @@
   50% {
     transform: translateY(-16px);
     opacity: 0.9;
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    scale: 1 1;
+  }
+  95% {
+    scale: 1 0.12;
   }
 }

@@ -222,6 +222,7 @@ export type JournalEntry = {
 export type PlayerSettings = {
   animation: "full" | "reduced";
   fontScale: "normal" | "large";
+  theme: "night" | "neon";
   highContrast: boolean;
 };
 
