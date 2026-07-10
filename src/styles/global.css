@@ -104,10 +104,6 @@ legend {
   z-index: -1;
   pointer-events: none;
   background-color: var(--page-bg);
-  background-image:
-    linear-gradient(var(--page-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--page-grid) 1px, transparent 1px);
-  background-size: 34px 34px;
 }
 
 .stage-column,
@@ -419,6 +415,14 @@ h2 {
   background: var(--chip-bg);
 }
 
+.settings-message {
+  margin: 0;
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  background: var(--panel-strong);
+  color: var(--ink);
+}
+
 .latest-response span {
   font-size: 0.78rem;
   font-weight: 900;
@@ -526,8 +530,9 @@ meter {
 [data-motion="reduced"] *,
 [data-motion="reduced"] *::before,
 [data-motion="reduced"] *::after {
-  animation-duration: 1ms !important;
-  transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -535,6 +540,7 @@ meter {
   *::before,
   *::after {
     animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
   }
 }

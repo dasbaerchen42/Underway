@@ -9,11 +9,11 @@ import { calculateWorldPhase } from "../domain/time/calculateWorldPhase";
 type View = "feed" | "journal" | "atlas" | "settings";
 
 function AppShell() {
-  const { state, dispatch } = useGame();
+  const { state, dispatch, currentTime } = useGame();
   const [view, setView] = useState<View>("feed");
   const [draftName, setDraftName] = useState("");
   const creature = state.creatures[0];
-  const phase = useMemo(() => calculateWorldPhase(), [state.lastVisitAt]);
+  const phase = useMemo(() => calculateWorldPhase(new Date(currentTime)), [currentTime]);
   const visibleTraits = creature.unlockedTraits.length
     ? creature.unlockedTraits.join("、")
     : "尚未命名的細微傾向";

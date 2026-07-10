@@ -4,6 +4,7 @@ import { selectDialogue } from "../dialogue/selectDialogue";
 import { translateToAppearance } from "../creature/translateToAppearance";
 import { unlockTraits } from "../creature/unlockTraits";
 import { updateFoodMeaningMemory } from "../creature/updateFoodMemory";
+import { getActiveTemporaryEffects } from "../creature/temporaryEffects";
 import { createSeededRandom } from "../random/seededRandom";
 import { applyAppearanceDelta, blendSignal } from "../vectors";
 import type { Creature, FeedingInput, FeedingRecord } from "../../types";
@@ -40,10 +41,16 @@ export function completeFeeding(
         label: "進食後的核心波紋",
         until: new Date(new Date(input.timestamp).getTime() + 1000 * 60 * 30).toISOString(),
       },
+      ...getActiveTemporaryEffects(creature.activeTemporaryEffects, input.timestamp),
     ],
   };
   updatedCreature.unlockedTraits = unlockTraits(updatedCreature);
-  const dialogue = selectDialogue(updatedCreature, input, rng);
+  const dialogue = selectDialogue(
+    updatedCreature,
+    input,
+    rng,
+    previousFeedings.map((feeding) => feeding.dialogue),
+  );
   const record: FeedingRecord = {
     ...input,
     id,

@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGame } from "../../state/gameStore";
-import type { GameState } from "../../types";
 
 export function SettingsPanel() {
-  const { state, dispatch, exportJson } = useGame();
+  const { state, dispatch, exportJson, importJson, resetGame, storageError } = useGame();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
   const settings = state.playerSettings;
 
   return (
@@ -87,7 +87,7 @@ export function SettingsPanel() {
         <button type="button" onClick={() => fileRef.current?.click()}>
           匯入 JSON
         </button>
-        <button type="button" onClick={() => dispatch({ type: "clear", now: new Date().toISOString() })}>
+        <button type="button" onClick={resetGame}>
           清除存檔
         </button>
       </div>
@@ -102,10 +102,17 @@ export function SettingsPanel() {
             return;
           }
           const text = await file.text();
-          dispatch({ type: "import", state: JSON.parse(text) as GameState });
+          const result = importJson(text);
+          setImportMessage(result.ok ? "存檔已安全匯入。" : result.message);
+          event.target.value = "";
         }}
       />
-      <p className="storage-warning">清除瀏覽器資料可能遺失存檔；匯出 JSON 可保留完整狀態。</p>
+      {(importMessage || storageError) && (
+        <p className="settings-message" role="status">
+          {importMessage ?? storageError}
+        </p>
+      )}
+      <p className="storage-warning">清除會移除這台裝置上的主要存檔與備份。請先匯出 JSON，避免無法復原。</p>
     </section>
   );
 }

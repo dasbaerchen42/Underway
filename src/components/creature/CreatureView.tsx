@@ -14,17 +14,24 @@ export function CreatureView({ creature }: { creature: Creature }) {
     "--fluid-motion": appearance.fluidMotion,
   } as CSSProperties;
   const name = creature.name === "未命名的牠" ? "小玻" : creature.name;
+  const reaction = creature.activeTemporaryEffects[0];
+  const reactionType = reaction?.id.startsWith("touch-") ? "touch" : reaction ? "feeding" : "idle";
 
   return (
-    <div className="creature-wrap" aria-label={`${name} 的觀測樣貌`}>
-      <div className="creature" style={style}>
+    <div
+      className={`creature-wrap reaction-${reactionType}`}
+      aria-label={`${name} 的觀測樣貌`}
+    >
+      <div className="creature" key={reaction?.id ?? "idle"} style={style}>
         <div className="creature-core">
           <span />
         </div>
-        <span className="creature-brow brow-left" />
-        <span className="creature-brow brow-right" />
-        <div className="creature-eye eye-left" />
-        <div className="creature-eye eye-right" />
+        <div className="face-rig" aria-hidden="true">
+          <span className="creature-brow brow-left" />
+          <span className="creature-brow brow-right" />
+          <span className="creature-eye eye-left" />
+          <span className="creature-eye eye-right" />
+        </div>
         {appearance.tendrils >= 18 && (
           <>
             <span className="tendril tendril-one" />

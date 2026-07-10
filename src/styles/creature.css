@@ -2,12 +2,11 @@
   position: absolute;
   left: 50%;
   top: 54%;
-  width: min(36vw, 330px);
-  min-width: 210px;
+  width: clamp(200px, 38cqw, 330px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   z-index: 9;
-  animation: float 9s ease-in-out infinite;
+  animation: habitat-drift 14s ease-in-out infinite;
 }
 
 .creature {
@@ -15,10 +14,7 @@
   inset: 13% 10% 14%;
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 46% 52% 48% 54% / 48% 46% 56% 52%;
-  background:
-    radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.8), transparent 23%),
-    radial-gradient(circle at 58% 66%, rgba(255, 255, 255, 0.3), transparent 31%),
-    color-mix(in srgb, var(--pool) 62%, var(--paper));
+  background: color-mix(in srgb, var(--pool) 62%, var(--paper));
   filter:
     hue-rotate(calc(var(--blue) * 0.55deg - var(--amber) * 0.2deg))
     saturate(calc(0.98 + var(--blue) * 0.004))
@@ -34,10 +30,7 @@
 }
 
 .theme-neon .creature {
-  background:
-    radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.62), transparent 23%),
-    radial-gradient(circle at 58% 66%, rgba(77, 228, 255, 0.24), transparent 31%),
-    color-mix(in srgb, var(--pool) 36%, #162a52);
+  background: color-mix(in srgb, var(--pool) 36%, #162a52);
   border-color: rgba(107, 241, 255, 0.4);
   box-shadow:
     inset 0 12px 30px rgba(255, 255, 255, 0.16),
@@ -55,6 +48,20 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.42);
   transform: rotate(-18deg);
+}
+
+.reaction-touch .creature {
+  animation:
+    jelly 4.8s ease-in-out infinite,
+    body-shape 7.4s ease-in-out infinite,
+    reaction-touch 760ms ease-out 1;
+}
+
+.reaction-feeding .creature {
+  animation:
+    jelly 4.8s ease-in-out infinite,
+    body-shape 7.4s ease-in-out infinite,
+    reaction-feeding 980ms ease-out 1;
 }
 
 .creature-core {
@@ -83,6 +90,14 @@
   animation: core-spark 2.7s steps(5, end) infinite;
 }
 
+.face-rig {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  animation: face-wander 7.2s ease-in-out infinite;
+}
+
 .creature-brow {
   position: absolute;
   top: 29%;
@@ -96,13 +111,13 @@
 
 .brow-left {
   left: 34%;
-  animation: brow-left-drift 7.2s ease-in-out infinite;
+  animation: brow-left-expression 7.2s ease-in-out infinite;
 }
 
 .brow-right {
   right: 34%;
   top: 30.5%;
-  animation: brow-right-drift 7.2s ease-in-out infinite;
+  animation: brow-right-expression 7.2s ease-in-out infinite;
 }
 
 .creature-eye {
@@ -117,7 +132,6 @@
     0 1px 0 rgba(255, 255, 255, 0.42);
   z-index: 5;
   overflow: hidden;
-  animation: eye-wander 7.2s ease-in-out infinite;
 }
 
 .creature-eye::after {
@@ -310,23 +324,27 @@
   }
 }
 
-@keyframes float {
+@keyframes habitat-drift {
   0%,
   100% {
-    translate: 0 0;
+    left: 50%;
+    top: 54%;
   }
   24% {
-    translate: min(12vw, 92px) max(-10vh, -76px);
+    left: 70%;
+    top: 31%;
   }
   50% {
-    translate: max(-11vw, -86px) min(8vh, 62px);
+    left: 31%;
+    top: 28%;
   }
   76% {
-    translate: min(9vw, 72px) min(9vh, 70px);
+    left: 29%;
+    top: 69%;
   }
 }
 
-@keyframes eye-wander {
+@keyframes face-wander {
   0%,
   100% {
     translate: 0 0;
@@ -368,47 +386,77 @@
   }
 }
 
-@keyframes brow-left-drift {
+@keyframes brow-left-expression {
   0%,
   100% {
-    transform: translate(0, 0) rotate(-8deg);
+    transform: rotate(-8deg);
   }
   14% {
-    transform: translate(-28px, -22px) rotate(4deg);
+    transform: rotate(4deg);
   }
   30% {
-    transform: translate(28px, -20px) rotate(-14deg);
+    transform: rotate(-14deg);
   }
   48% {
-    transform: translate(32px, 20px) rotate(-6deg);
+    transform: rotate(-6deg);
   }
   66% {
-    transform: translate(-30px, 24px) rotate(8deg);
+    transform: rotate(8deg);
   }
   82% {
-    transform: translate(8px, -4px) rotate(-10deg);
+    transform: rotate(-10deg);
   }
 }
 
-@keyframes brow-right-drift {
+@keyframes brow-right-expression {
   0%,
   100% {
-    transform: translate(0, 0) rotate(8deg);
+    transform: rotate(8deg);
   }
   14% {
-    transform: translate(-28px, -22px) rotate(14deg);
+    transform: rotate(14deg);
   }
   30% {
-    transform: translate(28px, -20px) rotate(-4deg);
+    transform: rotate(-4deg);
   }
   48% {
-    transform: translate(32px, 20px) rotate(6deg);
+    transform: rotate(6deg);
   }
   66% {
-    transform: translate(-30px, 24px) rotate(-8deg);
+    transform: rotate(-8deg);
   }
   82% {
-    transform: translate(8px, -4px) rotate(10deg);
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes reaction-touch {
+  0% {
+    scale: 1;
+  }
+  34% {
+    scale: 1.08 0.92;
+  }
+  66% {
+    scale: 0.96 1.06;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes reaction-feeding {
+  0% {
+    scale: 1;
+  }
+  24% {
+    scale: 0.94 1.08;
+  }
+  52% {
+    scale: 1.07 0.96;
+  }
+  100% {
+    scale: 1;
   }
 }
 
@@ -499,8 +547,6 @@
 
 @media (max-width: 720px) {
   .creature-wrap {
-    width: min(58vw, 290px);
-    min-width: 190px;
-    top: 55%;
+    width: clamp(190px, 58cqw, 230px);
   }
 }

@@ -2,8 +2,19 @@ import { foods } from "../../data/foods";
 import { meanings } from "../../data/meanings";
 import type { FeedingRecord, JournalEntry, WorldEvent } from "../../types";
 
-export function dateKey(iso: string) {
-  return iso.slice(0, 10);
+export function dateKey(iso: string, timeZone?: string) {
+  const date = new Date(iso);
+  if (!Number.isFinite(date.getTime())) {
+    return iso.slice(0, 10);
+  }
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 export function buildJournalEntry(
